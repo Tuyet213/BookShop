@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "861440430023",
+    "project_id": "bookshop-a426b",
+    "storage_bucket": "bookshop-a426b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861440430023:android:590c87e9c01455fb2b13e2",
+        "android_client_info": {
+          "package_name": "vn.edu.ntu.bookshop.bookshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXDbXKBW8vUvfu7aOdMkCRpPaty6oGF5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
