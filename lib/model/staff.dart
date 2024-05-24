@@ -53,4 +53,19 @@ class StaffSnapshot{
       ref: docSnap.reference,
     );
   }
+  static Future<DocumentReference> add(Staff staff) async {
+    return FirebaseFirestore.instance.collection("Staffs").add(staff.toJson());
+  }
+
+  Future<void> update(Staff staff) async{
+    return ref.update(staff.toJson());
+  }
+
+  static Stream<List<StaffSnapshot>> getAll(){
+    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("Staffs").snapshots();
+    return sqs.map(
+            (qs) => qs.docs.map(
+                (docSnap) => StaffSnapshot.fromJson(docSnap)
+        ).toList());
+  }
 }

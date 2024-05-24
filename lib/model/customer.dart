@@ -1,3 +1,4 @@
+import 'package:bookshop/model/cart_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Customer{
@@ -58,6 +59,20 @@ class CustomerSnapshot{
       ref: docSnap.reference,
     );
   }
+  static Future<DocumentReference> add(Customer customer) async {
+    return FirebaseFirestore.instance.collection("Customers").add(customer.toJson());
+  }
 
+  Future<void> update(Customer customer) async{
+    return ref.update(customer.toJson());
+  }
+
+  static Stream<List<CartItemSnapshot>> getAll(){
+    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("Customers").snapshots();
+    return sqs.map(
+            (qs) => qs.docs.map(
+                (docSnap) => CartItemSnapshot.fromJson(docSnap)
+        ).toList());
+  }
 
 }

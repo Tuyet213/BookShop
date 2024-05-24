@@ -1,31 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Book{
-  String id, name, bookTypeId, description, image;
+  String id, name, description, image;
   double price;
   int quantity, publicationYear;
+  DocumentReference bookTypeRef;
+
 
   Book({
     required this.id,
     required this.name,
-    required this.bookTypeId,
     required this.description,
     required this.image,
     required this.price,
     required this.quantity,
     required this.publicationYear,
+    required this.bookTypeRef,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': this.id,
       'name': this.name,
-      'bookTypeId': this.bookTypeId,
       'description': this.description,
       'image': this.image,
       'price': this.price,
       'quantity': this.quantity,
       'publicationYear': this.publicationYear,
+      'bookTypeRef': this.bookTypeRef,
     };
   }
 
@@ -33,12 +35,12 @@ class Book{
     return Book(
       id: map['id'] as String,
       name: map['name'] as String,
-      bookTypeId: map['bookTypeId'] as String,
       description: map['description'] as String,
       image: map['image'] as String,
       price: map['price'] as double,
       quantity: map['quantity'] as int,
       publicationYear: map['publicationYear'] as int,
+      bookTypeRef: map['bookTypeRef'] as DocumentReference,
     );
   }
 }
@@ -63,5 +65,20 @@ class BookSnapshot{
       book: Book.fromJson(docSnap.data() as Map<String, dynamic>),
       ref: docSnap.reference,
     );
+  }
+  static Future<DocumentReference> add(Book book) async {
+    return FirebaseFirestore.instance.collection("Books").add(book.toJson());
+  }
+
+  Future<void> update(Book book) async{
+    return ref.update(book.toJson());
+  }
+
+  static Stream<List<BookSnapshot>> getAll(){
+    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("Books").snapshots();
+    return sqs.map(
+            (qs) => qs.docs.map(
+                (docSnap) => BookSnapshot.fromJson(docSnap)
+        ).toList());
   }
 }

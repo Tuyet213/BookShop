@@ -44,4 +44,19 @@ class StatusSnapshot{
       ref: docSnap.reference,
     );
   }
+  static Future<DocumentReference> add(Status status) async {
+    return FirebaseFirestore.instance.collection("Statuses").add(status.toJson());
+  }
+
+  Future<void> update(Status status) async{
+    return ref.update(status.toJson());
+  }
+
+  static Stream<List<StatusSnapshot>> getAll(){
+    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("Statuses").snapshots();
+    return sqs.map(
+            (qs) => qs.docs.map(
+                (docSnap) => StatusSnapshot.fromJson(docSnap)
+        ).toList());
+  }
 }

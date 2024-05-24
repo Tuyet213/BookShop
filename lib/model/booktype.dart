@@ -44,4 +44,19 @@ class BookTypeSnapshot{
       ref: docSnap.reference,
     );
   }
+  static Future<DocumentReference> add(BookType bookType) async {
+    return FirebaseFirestore.instance.collection("BookTypes").add(bookType.toJson());
+  }
+
+  Future<void> update(BookType bookType) async{
+    return ref.update(bookType.toJson());
+  }
+
+  static Stream<List<BookTypeSnapshot>> getAll(){
+    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("BookTypes").snapshots();
+    return sqs.map(
+            (qs) => qs.docs.map(
+                (docSnap) => BookTypeSnapshot.fromJson(docSnap)
+        ).toList());
+  }
 }
