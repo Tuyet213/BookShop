@@ -1,34 +1,36 @@
-import 'package:bookshop/model/book.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Order{
   String id;
   DocumentReference customerRef;
-  DocumentReference staffRef;
-  DocumentReference statusRef;
+  int status;
+  DateTime orderedDate;
+
 
   Order({
     required this.id,
     required this.customerRef,
-    required this.staffRef,
-    required this.statusRef,
+    required this.status,
+    required this.orderedDate,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': this.id,
       'customerRef': this.customerRef,
-      'staffRef': this.staffRef,
-      'statusRef': this.statusRef,
+      'status': this.status,
+      'orderedDate': this.orderedDate,
     };
   }
 
   factory Order.fromJson(Map<String, dynamic> map) {
+    Timestamp timestamp = map['orderedDate'] as Timestamp;
     return Order(
       id: map['id'] as String,
       customerRef: map['customerRef'] as DocumentReference,
-      staffRef: map['staffRef'] as DocumentReference,
-      statusRef: map['statusRef'] as DocumentReference,
+      status: map['status'] as int,
+      orderedDate: timestamp.toDate(),
     );
   }
 }

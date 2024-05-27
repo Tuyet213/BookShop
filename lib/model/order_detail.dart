@@ -76,4 +76,11 @@ class OrderDetailSnapshot{
                 (docSnap) => OrderDetailSnapshot.fromJson(docSnap)
         ).toList());
   }
+  static Stream<List<OrderDetailSnapshot>> getByOrderRef(DocumentReference orderRef) {
+    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance
+        .collection("OrderDetails")
+        .where('orderRef', isEqualTo: orderRef)
+        .snapshots();
+    return sqs.map((qs) => qs.docs.map((docSnap) => OrderDetailSnapshot.fromJson(docSnap)).toList());
+  }
 }

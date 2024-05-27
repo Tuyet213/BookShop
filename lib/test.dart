@@ -1,6 +1,7 @@
 import 'package:bookshop/widget/book.dart';
 import 'package:bookshop/widget/book_type.dart';
 import 'package:bookshop/widget/customer.dart';
+import 'package:bookshop/widget/order.dart';
 import 'package:bookshop/widget/staff.dart';
 import 'package:bookshop/widget/update_booktype.dart';
 import 'package:bookshop/widget_connect_firebase.dart';
@@ -29,7 +30,11 @@ class PageHome extends StatelessWidget {//class
                   destination: StaffPageConection()),
               _buildButton(context,
                   label: "Customer",
-                  destination: CustomerPageConection())
+                  destination: CustomerPageConection()),
+              _buildButton(context,
+                  label: "Order",
+                  destination: OrderPageConection()),
+
             ],
           ),
         ),
