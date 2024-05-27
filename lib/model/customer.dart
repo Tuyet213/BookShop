@@ -67,11 +67,11 @@ class CustomerSnapshot{
     return ref.update(customer.toJson());
   }
 
-  static Stream<List<CartItemSnapshot>> getAll(){
+  static Stream<List<CustomerSnapshot>> getAll(){
     Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("Customers").snapshots();
     return sqs.map(
             (qs) => qs.docs.map(
-                (docSnap) => CartItemSnapshot.fromJson(docSnap)
+                (docSnap) => CustomerSnapshot.fromJson(docSnap)
         ).toList());
   }
 

@@ -1,32 +1,35 @@
 
 import 'package:bookshop/show_snackbar.dart';
 import 'package:flutter/material.dart';
+
+import '../model/customer.dart';
 import '../model/staff.dart';
 
-class UpdateStaffPage extends StatefulWidget {
-  StaffSnapshot staffSnapshot;
+class UpdateCustomerPage extends StatefulWidget {
+  CustomerSnapshot customerSnapshot;
 
   @override
-  State<UpdateStaffPage> createState() => _UpdateStaffPageState();
+  State<UpdateCustomerPage> createState() => _UpdateCustomerPageState();
 
-  UpdateStaffPage({
-    required this.staffSnapshot,
+  UpdateCustomerPage({
+    required this.customerSnapshot,
   });
 }
 
-class _UpdateStaffPageState extends State<UpdateStaffPage> {
+class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
   TextEditingController txtId = TextEditingController();
   TextEditingController txtName = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPhone = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
+  TextEditingController txtAddress = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cập nhật nhân viên"),
+        title: Text("Cập nhật khách hàng"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SingleChildScrollView(
@@ -64,17 +67,23 @@ class _UpdateStaffPageState extends State<UpdateStaffPage> {
                     labelText: "Mật khẩu"
                 ),
               ),
+              TextField(
+                controller: txtAddress,
+                decoration: InputDecoration(
+                    labelText: "Địa chỉ"
+                ),
+              ),
               SizedBox(height: 15,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
                       onPressed: (){
-                        if(txtId.text!=null && txtName.text!=null && txtEmail.text!=null && txtPhone.text!=null && txtPassword!=null){
-                          Staff staff = Staff(id: txtId.text, name: txtName.text, email: txtEmail.text, phone: txtPhone.text, password: txtPassword.text);
+                        if(txtId.text!=null && txtName.text!=null && txtEmail.text!=null && txtPhone.text!=null && txtPassword!=null && txtAddress!=null){
+                          Customer customer = Customer(id: txtId.text, name: txtName.text, email: txtEmail.text, phone: txtPhone.text, password: txtPassword.text, address: txtAddress.text);
 
-                          showMySnackBar(context, "Đang cập nhật nhân viên", 3);
-                          _updateStaff(staff);
+                          showMySnackBar(context, "Đang cập nhật khách hàng", 3);
+                          _updateCustomer(customer);
                         }
                         else{
                           showMySnackBar(context, "Không được để trống trường thông tin nào", 3);
@@ -97,24 +106,25 @@ class _UpdateStaffPageState extends State<UpdateStaffPage> {
   @override
   void initState() {
     super.initState();
-    widget.staffSnapshot.ref.snapshots().listen((snapshot) {
+    widget.customerSnapshot.ref.snapshots().listen((snapshot) {
       if (snapshot.exists) {
-        var staff = Staff.fromJson(snapshot.data() as Map<String, dynamic>);
+        var customer = Customer.fromJson(snapshot.data() as Map<String, dynamic>);
         setState(() {
-          txtId.text = staff.id;
-          txtName.text = staff.name;
-          txtPassword.text = staff.password;
-          txtPhone.text = staff.phone;
-          txtEmail.text = staff.email;
+          txtId.text = customer.id;
+          txtName.text = customer.name;
+          txtPassword.text = customer.password;
+          txtPhone.text = customer.phone;
+          txtEmail.text = customer.email;
+          txtAddress.text = customer.address;
         });
       }
     });
   }
-  _updateStaff(Staff staff){
-    widget.staffSnapshot.update(staff)
-        .then((value) => showMySnackBar(context,"Cập nhật nhân viên thành công: ${txtName.text}" ,3 ))
+  _updateCustomer(Customer customer){
+    widget.customerSnapshot.update(customer)
+        .then((value) => showMySnackBar(context,"Cập nhật khách hàng thành công: ${txtName.text}" ,3 ))
         .catchError((error){
-      return showMySnackBar(context,"Cập nhật nhân viên không thành công: ${txtName.text}" ,3 );
+      return showMySnackBar(context,"Cập nhật khách hàng không thành công: ${txtName.text}" ,3 );
     }
     );
   }
