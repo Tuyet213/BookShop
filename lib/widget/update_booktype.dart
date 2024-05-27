@@ -1,6 +1,6 @@
 
 import 'package:bookshop/model/booktype.dart';
-import 'package:bookshop/widget/show_snackbar.dart';
+import 'package:bookshop/show_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

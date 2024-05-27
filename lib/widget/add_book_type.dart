@@ -1,4 +1,4 @@
-import 'package:bookshop/widget/show_snackbar.dart';
+import 'package:bookshop/show_snackbar.dart';
 import 'package:flutter/material.dart';
 
 import '../model/booktype.dart';
