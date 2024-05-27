@@ -1,3 +1,4 @@
+import 'package:bookshop/widget/book.dart';
 import 'package:bookshop/widget/book_type.dart';
 import 'package:bookshop/widget/update_booktype.dart';
 import 'package:bookshop/widget_connect_firebase.dart';
@@ -18,6 +19,9 @@ class PageHome extends StatelessWidget {//class
               _buildButton(context,
                   label: "BookType",
                   destination: BookTypePageConection()),
+              _buildButton(context,
+                  label: "Book",
+                  destination: BookPageConection())
             ],
           ),
         ),
