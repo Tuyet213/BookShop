@@ -28,6 +28,7 @@ class BookTypePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("Thể loại sách"),
@@ -54,19 +55,25 @@ class BookTypePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 var bookTypeSnapshot = list[index];
                 return Slidable(
-                  child: Text("${bookTypeSnapshot.bookType.name}"),
+                  child: Container(
+                    width: w,
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        "${bookTypeSnapshot.bookType.name}",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),                  ),
                   endActionPane: ActionPane(
-                    extentRatio: 0.6,
+                    extentRatio: 0.3,
                     motion: ScrollMotion(),
                     children: [
                       SlidableAction(
-                        // An action can be bigger than the others.
-                        flex: 2,
                         onPressed: (context) {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpdateBookTypePage(bookTypeSnapshot: bookTypeSnapshot),));
                         },
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
+                        // backgroundColor: Colors.blue,
+                        foregroundColor: Colors.blue,
                         icon: Icons.edit,
                         label: 'Cập nhật',
                       ),

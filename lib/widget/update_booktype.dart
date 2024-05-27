@@ -18,7 +18,7 @@ class _UpdateBookTypePageState extends State<UpdateBookTypePage> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Cập nhật thể loại sách"),
@@ -49,7 +49,9 @@ class _UpdateBookTypePageState extends State<UpdateBookTypePage> {
                       onPressed: (){
                         if(txtId.text!=null && txtName.text!=null){
                           BookType bookType = BookType(id: txtId.text, name: txtName.text);
-                          showMySnackBar(context, "Đang cập nhật thể loại sách", 10);
+                          print(widget.bookTypeSnapshot.bookType);
+                          print(widget.bookTypeSnapshot.ref);
+                          showMySnackBar(context, "Đang cập nhật thể loại sách", 3);
                           _updateBookType(bookType);
                         }
                         else{
@@ -65,10 +67,23 @@ class _UpdateBookTypePageState extends State<UpdateBookTypePage> {
       ),
     );
   }
+  // @override
+  // void initState() {
+  //   txtId.text = widget.bookTypeSnapshot.bookType.id;
+  //   txtName.text = widget.bookTypeSnapshot.bookType.name;
+  // }
   @override
   void initState() {
-    txtId.text = widget.bookTypeSnapshot.bookType.id;
-    txtName.text = widget.bookTypeSnapshot.bookType.name;
+    super.initState();
+    widget.bookTypeSnapshot.ref.snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        var bookType = BookType.fromJson(snapshot.data() as Map<String, dynamic>);
+        setState(() {
+          txtId.text = bookType.id;
+          txtName.text = bookType.name;
+        });
+      }
+    });
   }
   _updateBookType(BookType bookType){
     widget.bookTypeSnapshot.update(bookType)

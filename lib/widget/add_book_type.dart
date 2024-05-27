@@ -26,41 +26,37 @@ class _AddBookTypePageState extends State<AddBookTypePage> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
                 children: [
+                  TextField(
+                    controller: txtId,
+
+                    decoration: InputDecoration(
+                        labelText: "Id"
+                    ),
+                  ),
+                  TextField(
+                    controller: txtName,
+                    decoration: InputDecoration(
+                        labelText: "Tên"
+                    ),
+                  ),
+                  SizedBox(height: 15,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextField(
-                        controller: txtId,
-                        decoration: InputDecoration(
-                            labelText: "Id"
-                        ),
-                      ),
-                      TextField(
-                        controller: txtName,
-                        decoration: InputDecoration(
-                            labelText: "Tên"
-                        ),
-                      ),
-                      SizedBox(height: 15,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                              onPressed: (){
-                                if(txtId.text!=null && txtName.text!=null){
-                                  BookType bookType = BookType(id: txtId.text, name: txtName.text);
-                                  showMySnackBar(context, "Đang thêm thể loại sách", 10);
-                                  _addBookType(bookType);
-                                }
-                                else{
-                                  showMySnackBar(context, "Không được để trống trường thông tin nào", 3);
-                                }
-                              },
-                              child: Text("Thêm"))
-                        ],
-                      )
+                      ElevatedButton(
+                          onPressed: (){
+                            if(txtId.text!=null && txtName.text!=null){
+                              BookType bookType = BookType(id: txtId.text, name: txtName.text);
+                              showMySnackBar(context, "Đang thêm thể loại sách", 10);
+                              _addBookType(bookType);
+                            }
+                            else{
+                              showMySnackBar(context, "Không được để trống trường thông tin nào", 3);
+                            }
+                          },
+                          child: Text("Thêm"))
                     ],
-                  ),
+                  )
                 ]
             ),
           ),
