@@ -55,7 +55,7 @@ class OrderDetailPage extends StatelessWidget {
                       ),
                     ),
                     ...orderDetails.map((orderDetailSnapshot) {
-                      totalMoney += orderDetailSnapshot.orderDetail.quantity*orderDetailSnapshot.orderDetail.quantity;
+                      totalMoney += orderDetailSnapshot.orderDetail.price*orderDetailSnapshot.orderDetail.quantity;
                       return FutureBuilder<DocumentSnapshot>(
                         future: orderDetailSnapshot.orderDetail.bookRef.get(),
                         builder: (context, bookSnapshot) {
@@ -79,7 +79,7 @@ class OrderDetailPage extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("${bookData['name']}",  style: TextStyle(fontWeight: FontWeight.bold),),
-                                        Text("${orderDetailSnapshot.orderDetail.quantity} x ${orderDetailSnapshot.orderDetail.quantity}",),
+                                        Text("${orderDetailSnapshot.orderDetail.price} x ${orderDetailSnapshot.orderDetail.quantity}",),
                                       ],
                                     ),
                                   ))
