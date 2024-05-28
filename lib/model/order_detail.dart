@@ -4,7 +4,7 @@ class OrderDetail{
   String id;
   DocumentReference orderRef;
   DocumentReference bookRef;
-  double price;
+  int price;
   int quantity;
 
   OrderDetail({
@@ -30,7 +30,7 @@ class OrderDetail{
       id: map['id'] as String,
       orderRef: map['orderRef'] as DocumentReference,
       bookRef: map['bookRef'] as DocumentReference,
-      price: map['price'] as double,
+      price: map['price'] as int,
       quantity: map['quantity'] as int,
     );
   }
@@ -82,5 +82,6 @@ class OrderDetailSnapshot{
         .where('orderRef', isEqualTo: orderRef)
         .snapshots();
     return sqs.map((qs) => qs.docs.map((docSnap) => OrderDetailSnapshot.fromJson(docSnap)).toList());
+
   }
 }

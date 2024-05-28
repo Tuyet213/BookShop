@@ -73,7 +73,7 @@ class BookPage extends StatelessWidget {
                               children: [
                                 Expanded(
                                     flex: 1,
-                                    child: Image.network(bookSnapshot.book.image!)),
+                                    child: Image.network(bookSnapshot.book.image!, height: 100, fit: BoxFit.cover,),),
                                 Expanded(
                                     flex: 2,
                                     child: Padding(
@@ -81,7 +81,7 @@ class BookPage extends StatelessWidget {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("Tên sách: ${bookSnapshot.book.name}"),
+                                          Text("Tên sách: ${bookSnapshot.book.name}", style: TextStyle(fontWeight: FontWeight.bold),),
                                           Text("Giá: ${bookSnapshot.book.price}"),
                                           Text("Số lượng: ${bookSnapshot.book.quantity.toString()}"),
                                           Text("Thể loại: ${bookType}"),
