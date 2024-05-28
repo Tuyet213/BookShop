@@ -60,6 +60,7 @@ class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
                 decoration: InputDecoration(
                     labelText: "SĐT"
                 ),
+                keyboardType: TextInputType.phone,
               ),
               TextField(
                 controller: txtPassword,
@@ -79,8 +80,8 @@ class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
                 children: [
                   ElevatedButton(
                       onPressed: (){
-                        if(txtId.text!=null && txtName.text!=null && txtEmail.text!=null && txtPhone.text!=null && txtPassword!=null && txtAddress!=null){
-                          Customer customer = Customer(id: txtId.text, name: txtName.text, email: txtEmail.text, phone: txtPhone.text, password: txtPassword.text, address: txtAddress.text);
+                        if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty && !txtPassword.text.trim().isEmpty && !txtAddress.text.trim().isEmpty){
+                          Customer customer = Customer(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(), password: txtPassword.text.trim(), address: txtAddress.text.trim());
 
                           showMySnackBar(context, "Đang cập nhật khách hàng", 3);
                           _updateCustomer(customer);
@@ -122,9 +123,9 @@ class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
   }
   _updateCustomer(Customer customer){
     widget.customerSnapshot.update(customer)
-        .then((value) => showMySnackBar(context,"Cập nhật khách hàng thành công: ${txtName.text}" ,3 ))
+        .then((value) => showMySnackBar(context,"Cập nhật khách hàng thành công",3 ))//: ${txtName.text.trim()}"
         .catchError((error){
-      return showMySnackBar(context,"Cập nhật khách hàng không thành công: ${txtName.text}" ,3 );
+      return showMySnackBar(context,"Cập nhật khách hàng không thành công" ,3 );//: ${txtName.text.trim()}
     }
     );
   }

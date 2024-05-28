@@ -47,8 +47,8 @@ class _UpdateBookTypePageState extends State<UpdateBookTypePage> {
                 children: [
                   ElevatedButton(
                       onPressed: (){
-                        if(txtId.text!=null && txtName.text!=null){
-                          BookType bookType = BookType(id: txtId.text, name: txtName.text);
+                        if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty){
+                          BookType bookType = BookType(id: txtId.text.trim(), name: txtName.text.trim());
                           print(widget.bookTypeSnapshot.bookType);
                           print(widget.bookTypeSnapshot.ref);
                           showMySnackBar(context, "Đang cập nhật thể loại sách", 3);
@@ -87,9 +87,9 @@ class _UpdateBookTypePageState extends State<UpdateBookTypePage> {
   }
   _updateBookType(BookType bookType){
     widget.bookTypeSnapshot.update(bookType)
-        .then((value) => showMySnackBar(context,"Cập nhật thể loại sách thành công: ${txtName.text}" ,3 ))
+        .then((value) => showMySnackBar(context,"Cập nhật thể loại sách thành công" ,3 ))//: ${txtName.text.trim()}
         .catchError((error){
-      return showMySnackBar(context,"Cập nhật thể loại sách không thành công: ${txtName.text}" ,3 );
+      return showMySnackBar(context,"Cập nhật thể loại sách không thành công" ,3 );//: ${txtName.text.trim()}
     }
     );
   }

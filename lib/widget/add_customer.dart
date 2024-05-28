@@ -54,6 +54,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                     decoration: InputDecoration(
                         labelText: "SĐT"
                     ),
+                    keyboardType: TextInputType.phone,
                   ),
                   TextField(
                     controller: txtPassword,
@@ -73,8 +74,8 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                     children: [
                       ElevatedButton(
                           onPressed: (){
-                            if(txtId.text!=null && txtName.text!=null && txtEmail.text!=null && txtPhone.text!=null && txtPassword!=null && txtAddress!=null){
-                              Customer customer = Customer(id: txtId.text, name: txtName.text, email: txtEmail.text, phone: txtPhone.text, password: txtPassword.text, address: txtAddress.text);
+                            if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty && !txtPassword.text.trim().isEmpty && !txtAddress.text.trim().isEmpty){
+                              Customer customer = Customer(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(), password: txtPassword.text.trim(), address: txtAddress.text.trim());
                               showMySnackBar(context, "Đang thêm khách hàng", 10);
                               _addCustomer(customer);
                             }

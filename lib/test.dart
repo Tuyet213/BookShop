@@ -1,6 +1,7 @@
 import 'package:bookshop/widget/book.dart';
 import 'package:bookshop/widget/book_type.dart';
 import 'package:bookshop/widget/customer.dart';
+import 'package:bookshop/widget/income_statistics.dart';
 import 'package:bookshop/widget/order.dart';
 import 'package:bookshop/widget/staff.dart';
 import 'package:bookshop/widget/update_booktype.dart';
@@ -34,6 +35,9 @@ class PageHome extends StatelessWidget {//class
               _buildButton(context,
                   label: "Order",
                   destination: OrderPageConection()),
+              // _buildButton(context,
+              //     label: "Thống kê doanh thu",
+              //     destination: OrderStatistics())
 
             ],
           ),

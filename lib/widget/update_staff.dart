@@ -57,6 +57,7 @@ class _UpdateStaffPageState extends State<UpdateStaffPage> {
                 decoration: InputDecoration(
                     labelText: "SĐT"
                 ),
+                keyboardType: TextInputType.phone,
               ),
               TextField(
                 controller: txtPassword,
@@ -70,8 +71,8 @@ class _UpdateStaffPageState extends State<UpdateStaffPage> {
                 children: [
                   ElevatedButton(
                       onPressed: (){
-                        if(txtId.text!=null && txtName.text!=null && txtEmail.text!=null && txtPhone.text!=null && txtPassword!=null){
-                          Staff staff = Staff(id: txtId.text, name: txtName.text, email: txtEmail.text, phone: txtPhone.text, password: txtPassword.text);
+                        if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty && !txtPassword.text.trim().isEmpty){
+                          Staff staff = Staff(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(), password: txtPassword.text.trim());
 
                           showMySnackBar(context, "Đang cập nhật nhân viên", 3);
                           _updateStaff(staff);
@@ -112,9 +113,9 @@ class _UpdateStaffPageState extends State<UpdateStaffPage> {
   }
   _updateStaff(Staff staff){
     widget.staffSnapshot.update(staff)
-        .then((value) => showMySnackBar(context,"Cập nhật nhân viên thành công: ${txtName.text}" ,3 ))
+        .then((value) => showMySnackBar(context,"Cập nhật nhân viên thành công",3 ))//: ${txtName.text.trim()}"
         .catchError((error){
-      return showMySnackBar(context,"Cập nhật nhân viên không thành công: ${txtName.text}" ,3 );
+      return showMySnackBar(context,"Cập nhật nhân viên không thành công" ,3 );//: ${txtName.text.trim()}
     }
     );
   }

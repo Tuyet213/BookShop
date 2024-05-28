@@ -45,8 +45,8 @@ class _AddBookTypePageState extends State<AddBookTypePage> {
                     children: [
                       ElevatedButton(
                           onPressed: (){
-                            if(txtId.text!=null && txtName.text!=null){
-                              BookType bookType = BookType(id: txtId.text, name: txtName.text);
+                            if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty){
+                              BookType bookType = BookType(id: txtId.text.trim(), name: txtName.text.trim());
                               showMySnackBar(context, "Đang thêm thể loại sách", 10);
                               _addBookType(bookType);
                             }

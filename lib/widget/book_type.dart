@@ -23,9 +23,17 @@ class BookTypePageConection extends StatelessWidget {
 }
 
 
-class BookTypePage extends StatelessWidget {
+class BookTypePage extends StatefulWidget {
   const BookTypePage({super.key});
 
+  @override
+  State<BookTypePage> createState() => _BookTypePageState();
+}
+
+class _BookTypePageState extends State<BookTypePage> {
+  TextEditingController txtSearchId = new TextEditingController();
+  TextEditingController txtSearchKeyword = new TextEditingController();
+  var list=[];
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -48,40 +56,82 @@ class BookTypePage extends StatelessWidget {
           builder: (context, snapshot){
             if(snapshot.hasError) return Center(child: Text("Lỗi"),);
             if(!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-            var list = snapshot.data!;
-            return ListView.separated(
-              separatorBuilder: (context, index) => Divider(thickness: 1.5,),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                var bookTypeSnapshot = list[index];
-                return Slidable(
-                  child: Container(
-                    width: w,
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "${bookTypeSnapshot.bookType.name}",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),                  ),
-                  endActionPane: ActionPane(
-                    extentRatio: 0.3,
-                    motion: ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (context) {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpdateBookTypePage(bookTypeSnapshot: bookTypeSnapshot),));
-                        },
-                        // backgroundColor: Colors.blue,
-                        foregroundColor: Colors.blue,
-                        icon: Icons.edit,
-                        label: 'Cập nhật',
-                      ),
-
-                    ],
+            list = snapshot.data!;
+            //dùng StreamBuilder thì ko cần setState
+            return Column(
+              children: [
+                TextField(
+                  style: TextStyle(
+                    height: 0.5
                   ),
-                );
-              },
+                  controller: txtSearchId,
+                  decoration: InputDecoration(
+                    labelText: "Nhập mã sách",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                TextField(
+                  style: TextStyle(
+                      height: 0.5
+                  ),
+                  controller: txtSearchKeyword,
+                  decoration: InputDecoration(
+                      labelText: "Nhập từ khóa",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      String id = txtSearchId.text.trim().toLowerCase();
+                      String keyword = txtSearchKeyword.text.trim().toLowerCase();
+                      setState(() {
+                        list = snapshot.data!.where((bookType) {
+                          return (bookType.bookType.id.toLowerCase().contains(id) &&
+                              bookType.bookType.name.toLowerCase().contains(keyword));
+                        }).toList();
+                      });
+
+                    },
+                    child: Text("Tìm kiếm"),
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(thickness: 1.5,),
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      var bookTypeSnapshot = list[index];
+                      return Slidable(
+                        child: Container(
+                          width: w,
+                          height: 50,
+                          child: Center(
+                            child: Text(
+                              "${bookTypeSnapshot.bookType.name}",
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),                  ),
+                        endActionPane: ActionPane(
+                          extentRatio: 0.3,
+                          motion: ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpdateBookTypePage(bookTypeSnapshot: bookTypeSnapshot),));
+                              },
+                              // backgroundColor: Colors.blue,
+                              foregroundColor: Colors.blue,
+                              icon: Icons.edit,
+                              label: 'Cập nhật',
+                            ),
+                  
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
             );
           },
         ),

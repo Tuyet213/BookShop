@@ -53,6 +53,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
                     decoration: InputDecoration(
                         labelText: "SĐT"
                     ),
+                    keyboardType: TextInputType.phone,
                   ),
                   TextField(
                     controller: txtPassword,
@@ -66,8 +67,8 @@ class _AddStaffPageState extends State<AddStaffPage> {
                     children: [
                       ElevatedButton(
                           onPressed: (){
-                            if(txtId.text!=null && txtName.text!=null && txtEmail.text!=null && txtPhone.text!=null && txtPassword!=null){
-                              Staff staff = Staff(id: txtId.text, name: txtName.text, email: txtEmail.text, phone: txtPhone.text, password: txtPassword.text);
+                            if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty && !txtPassword.text.trim().isEmpty){
+                              Staff staff = Staff(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(), password: txtPassword.text.trim());
                               showMySnackBar(context, "Đang thêm nhân viên", 10);
                               _addStaff(staff);
                             }

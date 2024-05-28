@@ -135,31 +135,30 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                           children: [
                             ElevatedButton(
                                 onPressed: () async {
-                                  imageUrl = await uploadImage(imagePath: _xFile!.path, folders: ["book_app"], fileName: "${txtId.text}.jpg");
+                                  if(_xFile == null) imageUrl = widget.bookSnapshot.book.image;
+                                  else imageUrl = await uploadImage(imagePath: _xFile!.path, folders: ["book_app"], fileName: "${txtId.text}.jpg");
                                   if(imageUrl!=null) {
-                                    if (txtId.text != null &&
-                                        txtName.text != null &&
-                                        txtDescription != null &&
+                                    if (!txtId.text.trim().isEmpty &&
+                                        !txtName.text.trim().isEmpty &&
+                                        !txtDescription.text.trim().isEmpty &&
                                         bookTypeRef != null &&
-                                        txtQuantity != null &&
-                                        txtPublicationYear != null &&
-                                        txtPrice != null && imageUrl != null) {
-                                      Book book = Book(id: txtId.text,
-                                          name: txtName.text,
-                                          description: txtDescription.text,
+                                        !txtQuantity.text.trim().isEmpty&&
+                                        !txtPublicationYear.text.trim().isEmpty &&
+                                        !txtPrice.text.trim().isEmpty && imageUrl != null) {
+                                      Book book = Book(id: txtId.text.trim(),
+                                          name: txtName.text.trim(),
+                                          description: txtDescription.text.trim(),
                                           image: imageUrl!,
-                                          price: double.parse(txtPrice.text),
-                                          quantity: int.parse(txtQuantity.text),
+                                          price: double.parse(txtPrice.text.trim()),
+                                          quantity: int.parse(txtQuantity.text.trim()),
                                           publicationYear: int.parse(
-                                              txtPublicationYear.text),
+                                              txtPublicationYear.text.trim()),
                                           bookTypeRef: bookTypeRef!);
                                       showMySnackBar(
                                           context, "Đang cập nhật sách", 10);
                                       _updateBook(book);
                                     }
-                                  }
-                                  else{
-                                    showMySnackBar(context, "Không được để trống trường thông tin nào", 3);
+                                    else showMySnackBar(context, "Không được để trống trường thông tin nào", 3);
                                   }
                                 },
                                 child: Text("Cập nhật")
@@ -195,9 +194,9 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
   }
   _updateBook(Book book){
     widget.bookSnapshot.update(book)
-        .then((value) => showMySnackBar(context,"Cập nhật sách thành công: ${txtName.text}" ,3 ))
+        .then((value) => showMySnackBar(context,"Cập nhật sách thành công" ,3 ))//: ${txtName.text.trim()
         .catchError((error){
-      return showMySnackBar(context,"Cập nhật sách không thành công: ${txtName.text}" ,3 );
+      return showMySnackBar(context,"Cập nhật sách không thành công",3 );//: ${txtName.text.trim()}"
     }
     );
   }
