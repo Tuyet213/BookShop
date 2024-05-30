@@ -166,7 +166,9 @@ class _OrderPageState extends State<OrderPage> {
                       value: 0,
                       groupValue: status,
                       onChanged: (value) {
-                        status = value!;
+                        setState((){
+                          status = value!;
+                        });
                       },
                     ),
                     RadioListTile<int>(
@@ -174,7 +176,9 @@ class _OrderPageState extends State<OrderPage> {
                       value: 1,
                       groupValue: status,
                       onChanged: (value) {
-                        status = value!;
+                        setState((){
+                          status = value!;
+                        });
                       },
                     ),
                     RadioListTile<int>(
@@ -182,7 +186,9 @@ class _OrderPageState extends State<OrderPage> {
                       value: 2,
                       groupValue: status,
                       onChanged: (value) {
-                        status = value!;
+                        setState((){
+                          status = value!;
+                        });
                       },
                     ),
                   ],
