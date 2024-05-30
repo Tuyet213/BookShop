@@ -130,59 +130,7 @@ class _OrderPageState extends State<OrderPage> {
                           motion: ScrollMotion(),
                           children: [
                             SlidableAction(
-                              onPressed: (_) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    int status = orderSnapshot.order.status;
-                                    return AlertDialog(
-                                      title: Text('Cập nhật trạng thái đơn hàng'),
-                                      content: StatefulBuilder(
-                                        builder: (context, setState) {
-
-                                          return Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              RadioListTile<int>(
-                                                title: Text('Chưa giao'),
-                                                value: 0,
-                                                groupValue: status,
-                                                onChanged: (value) {
-                                                  setState(() => status = value!);
-                                                },
-                                              ),
-                                              RadioListTile<int>(
-                                                title: Text('Giao thành công'),
-                                                value: 1,
-                                                groupValue: status,
-                                                onChanged: (value) {
-                                                  setState(() => status = value!);
-                                                },
-                                              ),
-                                              RadioListTile<int>(
-                                                title: Text('Không giao được'),
-                                                value: 2,
-                                                groupValue: status,
-                                                onChanged: (value) {
-                                                  setState(() => status = value!);
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: Text('OK'),
-                                          onPressed: () {
-                                            orderSnapshot.ref.update({'status': status}).then((value) {
-                                              Navigator.of(context).pop();
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  }
-                              ),
+                              onPressed: (_) => _showEditPanel(context, orderSnapshot),
                               // backgroundColor: Colors.blue,
                               foregroundColor: Colors.blue,
                               icon: Icons.edit,
@@ -201,7 +149,71 @@ class _OrderPageState extends State<OrderPage> {
       ),
     );
   }
-
+  void _showEditPanel(BuildContext context, OrderSnapshot orderSnapshot) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          int status = orderSnapshot.order.status;
+          return AlertDialog(
+            title: Text('Cập nhật trạng thái đơn hàng'),
+            content: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    RadioListTile<int>(
+                      title: Text('Chưa giao'),
+                      value: 0,
+                      groupValue: status,
+                      onChanged: (value) {
+                        status = value!;
+                      },
+                    ),
+                    RadioListTile<int>(
+                      title: Text('Giao thành công'),
+                      value: 1,
+                      groupValue: status,
+                      onChanged: (value) {
+                        status = value!;
+                      },
+                    ),
+                    RadioListTile<int>(
+                      title: Text('Không giao được'),
+                      value: 2,
+                      groupValue: status,
+                      onChanged: (value) {
+                        status = value!;
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  orderSnapshot.ref.update({'status': status}).then((value) {
+                    setState(() {
+                      orderSnapshot.order.status = status;
+                      if (filterStatus == -1 || filterStatus == status) {
+                        int index = filteredList.indexOf(orderSnapshot);
+                        if (index != -1) {
+                          filteredList[index].order.status = status;
+                        }
+                      } else {
+                        filteredList.remove(orderSnapshot);
+                      }
+                    });
+                    Navigator.of(context).pop();
+                  });
+                },
+              ),
+            ],
+          );
+        }
+    );
+  }
 
 }
 
