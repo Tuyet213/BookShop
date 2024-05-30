@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Book{
-  String id, name, description, image;
+  String id, name, description, image, author;
   double price;
   int quantity, publicationYear;
   DocumentReference bookTypeRef;
@@ -12,10 +12,12 @@ class Book{
     required this.name,
     required this.description,
     required this.image,
+    required this.author,
     required this.price,
     required this.quantity,
     required this.publicationYear,
     required this.bookTypeRef,
+
   });
 
   Map<String, dynamic> toJson() {
@@ -24,6 +26,7 @@ class Book{
       'name': this.name,
       'description': this.description,
       'image': this.image,
+      'author': this.author,
       'price': this.price,
       'quantity': this.quantity,
       'publicationYear': this.publicationYear,
@@ -37,6 +40,7 @@ class Book{
       name: map['name'] as String,
       description: map['description'] as String,
       image: map['image'] as String,
+      author: map['author'] as String,
       price: map['price'] as double,
       quantity: map['quantity'] as int,
       publicationYear: map['publicationYear'] as int,

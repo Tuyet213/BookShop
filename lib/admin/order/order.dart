@@ -31,6 +31,9 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+  int filterStatus = -1;
+  List<OrderSnapshot> fullList = [];
+  List<OrderSnapshot> filteredList = [];
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -53,48 +56,91 @@ class _OrderPageState extends State<OrderPage> {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            var list = snapshot.data!;
-            return ListView.separated(
-              separatorBuilder: (context, index) => Divider(
-                thickness: 1.5,
-              ),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                var orderSnapshot = list[index];
-                Color color = Colors.black;
-                if (orderSnapshot.order.status == 1) color = Colors.green;
-                if (orderSnapshot.order.status == 2) color = Colors.red;
-                return Slidable(
-                  child: ListTile(
-                    title: Text(
-                      "Mã đơn hàng: ${orderSnapshot.order.id}",
-                      style: TextStyle(
-                          color: color, fontWeight: FontWeight.bold),
+            fullList = snapshot.data!;
+            if (filteredList.isEmpty) {
+              filteredList = fullList;
+            }
+            return Column(
+              children: [
+                DropdownButton(
+                  isExpanded: true,
+                  value: filterStatus,
+                    items: [
+                      DropdownMenuItem(
+                          value: -1,
+                          child: Text("None")),
+                      DropdownMenuItem(
+                          value: 0,
+                          child: Text("Chưa giao")),
+                      DropdownMenuItem(
+                          value: 1,
+                          child: Text("Giao thành công")),
+                      DropdownMenuItem(
+                          value: 2,
+                          child: Text("Giao không thành công"))
+                    ],
+                    onChanged: (int? value) {
+                      if(value!=null){
+                        setState(() {
+                          filterStatus=value;
+                          switch(filterStatus){
+                            case -1:
+                              filteredList = fullList;
+                              break;
+                            case 0:
+                            case 1:
+                            case 2:
+                              filteredList = fullList.where((order) => order.order.status == filterStatus).toList();
+                              break;
+                          }
+                        });
+                      }
+                    },),
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(
+                      thickness: 1.5,
                     ),
-                    subtitle: Text(
-                      "Ngày đặt: ${orderSnapshot.order.orderedDate}",
-                      style: TextStyle(
-                          color: color, fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderSnapshot: orderSnapshot),));
+                    itemCount: filteredList.length,
+                    itemBuilder: (context, index) {
+                      var orderSnapshot = filteredList[index];
+                      Color color = Colors.black;
+                      if (orderSnapshot.order.status == 1) color = Colors.green;
+                      if (orderSnapshot.order.status == 2) color = Colors.red;
+                      return Slidable(
+                        child: ListTile(
+                          title: Text(
+                            "Mã đơn hàng: ${orderSnapshot.order.id}",
+                            style: TextStyle(
+                                color: color, fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            "Ngày đặt: ${orderSnapshot.order.orderedDate}",
+                            style: TextStyle(
+                                color: color, fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailPage(orderSnapshot: orderSnapshot),));
+                          },
+                        ),
+                        endActionPane: ActionPane(
+                          extentRatio: 0.3,
+                          motion: ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (_) => _showEditPanel(context, orderSnapshot),
+                              // backgroundColor: Colors.blue,
+                              foregroundColor: Colors.blue,
+                              icon: Icons.edit,
+                              label: 'Cập nhật',
+                            ),
+                          ],
+                        ),
+                      );
                     },
                   ),
-                  endActionPane: ActionPane(
-                    extentRatio: 0.3,
-                    motion: ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (_) => _showEditPanel(context, orderSnapshot),
-                        // backgroundColor: Colors.blue,
-                        foregroundColor: Colors.blue,
-                        icon: Icons.edit,
-                        label: 'Cập nhật',
-                      ),
-                    ],
-                  ),
-                );
-              },
+                ),
+              ],
             );
           },
         ),
@@ -156,6 +202,7 @@ class _OrderPageState extends State<OrderPage> {
         }
     );
   }
+
 }
 
 

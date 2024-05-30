@@ -24,9 +24,17 @@ class CustomerPageConection extends StatelessWidget {
 }
 
 
-class CustomerPage extends StatelessWidget {
+class CustomerPage extends StatefulWidget {
   const CustomerPage({super.key});
 
+  @override
+  State<CustomerPage> createState() => _CustomerPageState();
+}
+
+class _CustomerPageState extends State<CustomerPage> {
+  TextEditingController txtSearchKeyword = new TextEditingController();
+  List<CustomerSnapshot> fullList = [];
+  List<CustomerSnapshot> filteredList = [];
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -49,45 +57,81 @@ class CustomerPage extends StatelessWidget {
           builder: (context, snapshot){
             if(snapshot.hasError) return Center(child: Text("Lỗi"),);
             if(!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-            var list = snapshot.data!;
-            return ListView.separated(
-              separatorBuilder: (context, index) => Divider(thickness: 1.5,),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                var customerSnapshot = list[index];
-                return Slidable(
-                  child: Container(
-                    width: w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Tên: ${customerSnapshot.customer.name}"),
-                        Text("Email: ${customerSnapshot.customer.email}"),
-                        Text("SĐT: ${customerSnapshot.customer.phone}"),
-                        Text("Mật khẩu: ${customerSnapshot.customer.password}"),
-                        Text("Địa chỉ: ${customerSnapshot.customer.address}"),
-                      ],
-                    ),
-                  ),
-                  endActionPane: ActionPane(
-                    extentRatio: 0.3,
-                    motion: ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (context) {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpdateCustomerPage(customerSnapshot: customerSnapshot),));
-                        },
-                        // backgroundColor: Colors.blue,
-                        foregroundColor: Colors.blue,
-                        icon: Icons.edit,
-                        label: 'Cập nhật',
-                      ),
+            fullList = snapshot.data!;
+            if (filteredList.isEmpty) {
+              filteredList = fullList;
+            }
+            return Column(children: [
+              SizedBox(
+                height: 10,
+              ),
+              TextField(
+                style: TextStyle(height: 0.5),
+                controller: txtSearchKeyword,
+                decoration: InputDecoration(
+                  labelText: "Nhập từ khóa",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  String keyword = txtSearchKeyword.text.trim().toLowerCase();
+                  setState(() {
+                    filteredList = fullList.where((customer) {
+                      return customer.customer.name.toLowerCase().contains(keyword)
+                      ||customer.customer.address.toLowerCase().contains(keyword)
+                      ||customer.customer.phone.toLowerCase().contains(keyword)
+                      ||customer.customer.email.toLowerCase().contains(keyword);
+                    }).toList();
+                  });
+                },
+                child: Text("Tìm kiếm"),
+              ),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: filteredList.length,
+                  itemBuilder: (context, index) {
+                    var customerSnapshot = filteredList[index];
+                    return Slidable(
+                      child: Container(
+                        width: w,
 
-                    ],
-                  ),
-                );
-              },
-            );
+                        child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Tên: ${customerSnapshot.customer.name}"),
+                                    Text("Email: ${customerSnapshot.customer.email}"),
+                                    Text("SĐT: ${customerSnapshot.customer.phone}"),
+                                    Text("Mật khẩu: ${customerSnapshot.customer.password}"),
+                                    Text("Địa chỉ: ${customerSnapshot.customer.address}"),
+                                  ],
+                                ),
+                      ),
+                      endActionPane: ActionPane(
+                        extentRatio: 0.3,
+                        motion: ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (context) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => UpdateCustomerPage(
+                                    customerSnapshot: customerSnapshot),
+                              ));
+                            },
+                            // backgroundColor: Colors.blue,
+                            foregroundColor: Colors.blue,
+                            icon: Icons.edit,
+                            label: 'Cập nhật',
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => Divider(thickness: 1.5),
+                ),
+              )
+            ]);
+
           },
         ),
       ),

@@ -25,6 +25,7 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
   TextEditingController txtId = TextEditingController();
   TextEditingController txtName = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
+  TextEditingController txtAuthor = TextEditingController();
   TextEditingController txtPrice = TextEditingController();
   TextEditingController txtQuantity = TextEditingController();
   TextEditingController txtPublicationYear = TextEditingController();
@@ -50,6 +51,13 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                       children: [
+                        Center(
+                          child:  Container(
+                            width: w*0.8,
+                            height: w*0.8*2/3,
+                            child: setImage?_xFile==null?Icon(Icons.image):Image.file(File(_xFile!.path)):Image.network(imageUrl!),
+                          ),
+                        ),
                         DropdownButton<DocumentReference>(
                           isExpanded: true,
                           value: bookTypeRef,
@@ -64,13 +72,6 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                               });
                             }
                           },
-                        ),
-                        Center(
-                          child:  Container(
-                            width: w*0.8,
-                            height: w*0.8*2/3,
-                            child: setImage?_xFile==null?Icon(Icons.image):Image.file(File(_xFile!.path)):Image.network(imageUrl!),
-                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -108,6 +109,12 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                           ),
                         ),
                         TextField(
+                          controller: txtAuthor,
+                          decoration: InputDecoration(
+                              labelText: "Tác giả"
+                          ),
+                        ),
+                        TextField(
                           controller: txtPrice,
                           decoration: InputDecoration(
                               labelText: "Giá"
@@ -141,6 +148,7 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                                     if (!txtId.text.trim().isEmpty &&
                                         !txtName.text.trim().isEmpty &&
                                         !txtDescription.text.trim().isEmpty &&
+                                        !txtAuthor.text.trim().isEmpty &&
                                         bookTypeRef != null &&
                                         !txtQuantity.text.trim().isEmpty&&
                                         !txtPublicationYear.text.trim().isEmpty &&
@@ -148,6 +156,7 @@ class _UpdateBookPageState extends State<UpdateBookPage> {
                                       Book book = Book(id: txtId.text.trim(),
                                           name: txtName.text.trim(),
                                           description: txtDescription.text.trim(),
+                                          author: txtAuthor.text.trim(),
                                           image: imageUrl!,
                                           price: double.parse(txtPrice.text.trim()),
                                           quantity: int.parse(txtQuantity.text.trim()),

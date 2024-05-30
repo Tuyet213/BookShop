@@ -23,6 +23,7 @@ class _AddBookPageState extends State<AddBookPage> {
   TextEditingController txtId = TextEditingController();
   TextEditingController txtName = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
+  TextEditingController txtAuthor = TextEditingController();
   TextEditingController txtPrice = TextEditingController();
   TextEditingController txtQuantity = TextEditingController();
   TextEditingController txtPublicationYear = TextEditingController();
@@ -50,27 +51,27 @@ class _AddBookPageState extends State<AddBookPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                     children: [
-                  DropdownButton<DocumentReference>(
-                    isExpanded: true,
-                  value: bookTypeRef,
-                  items: bookTypes.map((sns) => DropdownMenuItem(
-                    child: Text(sns.bookType.name),
-                    value: sns.ref,
-                  )).toList(),
-                  onChanged: (DocumentReference? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        bookTypeRef = newValue;
-                      });
-                    }
-                  },
-                ),
                       Center(
                         child:  Container(
                           width: w*0.8,
                           height: w*0.8*2/3,
                           child: _xFile==null?Icon(Icons.image):Image.file(File(_xFile!.path)),
                         ),
+                      ),
+                      DropdownButton<DocumentReference>(
+                        isExpanded: true,
+                        value: bookTypeRef,
+                        items: bookTypes.map((sns) => DropdownMenuItem(
+                          child: Text(sns.bookType.name),
+                          value: sns.ref,
+                        )).toList(),
+                        onChanged: (DocumentReference? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              bookTypeRef = newValue;
+                            });
+                          }
+                        },
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -107,6 +108,12 @@ class _AddBookPageState extends State<AddBookPage> {
                         ),
                       ),
                       TextField(
+                        controller: txtAuthor,
+                        decoration: InputDecoration(
+                            labelText: "Tác giả"
+                        ),
+                      ),
+                      TextField(
                         controller: txtPrice,
                         decoration: InputDecoration(
                             labelText: "Giá"
@@ -139,6 +146,7 @@ class _AddBookPageState extends State<AddBookPage> {
                                   if (!txtId.text.trim().isEmpty &&
                                       !txtName.text.trim().isEmpty &&
                                       !txtDescription.text.trim().isEmpty &&
+                                      !txtAuthor.text.trim().isEmpty &&
                                       bookTypeRef != null &&
                                       !txtQuantity.text.trim().isEmpty&&
                                       !txtPublicationYear.text.trim().isEmpty &&
@@ -147,6 +155,7 @@ class _AddBookPageState extends State<AddBookPage> {
                                         name: txtName.text.trim(),
                                         description: txtDescription.text.trim(),
                                         image: imageUrl!,
+                                        author: txtAuthor.text.trim(),
                                         price: double.parse(txtPrice.text.trim()),
                                         quantity: int.parse(txtQuantity.text.trim()),
                                         publicationYear: int.parse(
