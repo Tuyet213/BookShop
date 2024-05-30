@@ -35,9 +35,9 @@ class PageHome extends StatelessWidget {//class
               _buildButton(context,
                   label: "Order",
                   destination: OrderPageConection()),
-              // _buildButton(context,
-              //     label: "Thống kê doanh thu",
-              //     destination: OrderStatistics())
+              _buildButton(context,
+                  label: "Thống kê doanh thu",
+                  destination: StatisticsPageConection())
 
             ],
           ),
