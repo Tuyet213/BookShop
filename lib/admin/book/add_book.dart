@@ -6,8 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../image_upload.dart';
-import '../model/book.dart';
+import '../../image_upload.dart';
+import '../../model/book.dart';
 
 class AddBookPage extends StatefulWidget {
   const AddBookPage({super.key});

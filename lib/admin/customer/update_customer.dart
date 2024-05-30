@@ -2,8 +2,8 @@
 import 'package:bookshop/show_snackbar.dart';
 import 'package:flutter/material.dart';
 
-import '../model/customer.dart';
-import '../model/staff.dart';
+import '../../model/customer.dart';
+import '../../model/staff.dart';
 
 class UpdateCustomerPage extends StatefulWidget {
   CustomerSnapshot customerSnapshot;

@@ -1,11 +1,11 @@
 
 import 'package:bookshop/model/customer.dart';
-import 'package:bookshop/widget/update_customer.dart';
+import 'package:bookshop/admin/customer/update_customer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import '../widget_connect_firebase.dart';
+import '../../widget_connect_firebase.dart';
 import 'add_customer.dart';
 class CustomerPageConection extends StatelessWidget {
   const CustomerPageConection({super.key});

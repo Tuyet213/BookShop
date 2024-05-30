@@ -1,7 +1,7 @@
 import 'package:bookshop/show_snackbar.dart';
 import 'package:flutter/material.dart';
 
-import '../model/booktype.dart';
+import '../../model/booktype.dart';
 
 class AddBookTypePage extends StatefulWidget {
   const AddBookTypePage({super.key});

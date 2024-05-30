@@ -1,5 +1,5 @@
 
-import 'package:bookshop/widget/update_staff.dart';
+import 'package:bookshop/admin/update_staff.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';

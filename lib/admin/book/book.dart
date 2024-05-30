@@ -1,11 +1,11 @@
 import 'package:bookshop/model/booktype.dart';
-import 'package:bookshop/widget/update_book.dart';
+import 'package:bookshop/admin/book/update_book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import '../model/book.dart';
-import '../widget_connect_firebase.dart';
+import '../../model/book.dart';
+import '../../widget_connect_firebase.dart';
 import 'add_book.dart';
 
 class BookPageConection extends StatelessWidget {

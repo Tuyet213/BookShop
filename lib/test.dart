@@ -1,10 +1,10 @@
-import 'package:bookshop/widget/book.dart';
-import 'package:bookshop/widget/book_type.dart';
-import 'package:bookshop/widget/customer.dart';
-import 'package:bookshop/widget/income_statistics.dart';
-import 'package:bookshop/widget/order.dart';
-import 'package:bookshop/widget/staff.dart';
-import 'package:bookshop/widget/update_booktype.dart';
+import 'package:bookshop/admin/book/book.dart';
+import 'package:bookshop/admin/book_type/book_type.dart';
+import 'package:bookshop/admin/customer/customer.dart';
+import 'package:bookshop/admin/income_statistics.dart';
+import 'package:bookshop/admin/order/order.dart';
+import 'package:bookshop/admin/staff.dart';
+import 'package:bookshop/admin/book_type/update_booktype.dart';
 import 'package:bookshop/widget_connect_firebase.dart';
 import 'package:flutter/material.dart';
 
