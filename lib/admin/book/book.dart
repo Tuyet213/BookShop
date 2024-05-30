@@ -38,6 +38,7 @@ class _BookPageState extends State<BookPage> {
   List<BookSnapshot> filteredList = [];
   List<BookTypeSnapshot> bookTypes = [];
   BookTypeSnapshot? bookType;
+  int flag =0;
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -61,11 +62,10 @@ class _BookPageState extends State<BookPage> {
             if(snapshot.hasError) return Center(child: Text("Lỗi"),);
             if(!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
             fullList = snapshot.data!;
-            if (filteredList.isEmpty) {
+            if (filteredList.isEmpty && flag == 0) {
               filteredList = fullList;
+              flag++;
             }//AsyncSnapshot=>data
-
-
             return FutureBuilder<List<String>>(
                 future: Future.wait(fullList.map((book) async{
                   DocumentSnapshot bookTypeSnapshot = await book.book.bookTypeRef.get();
@@ -139,7 +139,7 @@ class _BookPageState extends State<BookPage> {
                                                   Text("Tên sách: ${bookSnapshot.book.name}", style: TextStyle(fontWeight: FontWeight.bold),),
                                                   Text("Giá: ${bookSnapshot.book.price}"),
                                                   Text("Số lượng: ${bookSnapshot.book.quantity.toString()}"),
-                                                  Text("Thể loại: ${bookType}"),
+                                                  //Text("Thể loại: ${bookType}"),
                                                 ],
                                               ),
                                             ))

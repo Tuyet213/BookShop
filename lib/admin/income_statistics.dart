@@ -39,6 +39,8 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
   List<OrderSnapshot> fullList = [];
   List<OrderSnapshot> filterList = [];
   Map<DocumentReference, int> productRevenues = {};
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +55,7 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
               builder: (context, snapshot) {
                 if(snapshot.hasError) return Center(child: Text("Lỗi"),);
                 if(!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-                fullList = snapshot.data!;
-                if (filterList.isEmpty) {
-                  filterList = fullList;
-                }
+                filterList = snapshot.data!;
                 return Column(
                   crossAxisAlignment:  CrossAxisAlignment.start,
                   children: [
@@ -110,7 +109,7 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                         onPressed: () {
                           setState(() {
                             filterList = fullList.where((order) => order.order.orderedDate.isAfter(from!)
-                                && order.order.orderedDate.isBefore(to!),).toList();
+                                && order.order.orderedDate.isBefore(to!) && order.order.status == 1,).toList();
                             for(var order in filterList){
                               Stream<List<OrderDetailSnapshot>> orderDetailSnapshots = OrderDetailSnapshot.getByOrderRef(order.ref);
                               List<OrderDetailSnapshot> orderDetailsList = [];
@@ -162,6 +161,25 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                         ));
                       },
                     ):Text(""),
+                    // Expanded(child: ListView.separated(
+                    //     itemBuilder: (context, index) {
+                    //       return Row(
+                    //         children: [
+                    //           Container(
+                    //             width: 10,
+                    //             height: 10,
+                    //             decoration: BoxDecoration(
+                    //               shape: BoxShape.circle,
+                    //               color: productColors.entries.elementAt(index).value
+                    //             ),
+                    //           ),
+                    //           SizedBox(width: 8,),
+                    //           Text(productColors.entries.elementAt(index).key)
+                    //         ],
+                    //       );
+                    //     },
+                    //     separatorBuilder: (context, index) => Divider(thickness: 1.5,),
+                    //     itemCount: productColors.length))
                   ],
                 );
               }
@@ -174,7 +192,7 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
   @override
   void initState() {
     DateTime today = DateTime.now();
-    from = today.subtract(Duration(days: 30));
+    from = today;
     to = today;
   }
   Future<List<PieChartSectionData>> getPieSections() async {
@@ -192,6 +210,7 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
 
       sections.add(PieChartSectionData(
         title: '${title}\n${value}',
+        titleStyle: TextStyle(fontSize: 10),
         color: color,
         value: value,
         radius: 170,
@@ -200,6 +219,8 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
       ));
       colorIndex++;
     }
+
+
     return sections;
   }
 
