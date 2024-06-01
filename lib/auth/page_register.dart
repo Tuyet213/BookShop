@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../page/component.dart';
 import '../page/page_main.dart';
+import '../page/page_search.dart';
 
 class PageRegister extends StatefulWidget {
   const PageRegister({Key? key}) : super(key: key);
@@ -430,7 +431,7 @@ class _PageRegisterState extends State<PageRegister> {
         .then((value) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => const PageMain(name: "Customer"),
+            builder: (context) => PageMain(name: "Customer"),
           ),
           (route) => false);
     }).catchError((onError) {

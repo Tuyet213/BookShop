@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Book{
+import 'booktype.dart';
+
+class Book {
   String id, name, description, image, author;
   double price;
   int quantity, publicationYear;
   DocumentReference bookTypeRef;
-
 
   Book({
     required this.id,
@@ -17,7 +18,6 @@ class Book{
     required this.quantity,
     required this.publicationYear,
     required this.bookTypeRef,
-
   });
 
   Map<String, dynamic> toJson() {
@@ -48,7 +48,8 @@ class Book{
     );
   }
 }
-class BookSnapshot{
+
+class BookSnapshot {
   Book book;
   DocumentReference ref;
 
@@ -74,15 +75,21 @@ class BookSnapshot{
     return FirebaseFirestore.instance.collection("Books").add(book.toJson());
   }
 
-  Future<void> update(Book book) async{
+  Future<void> update(Book book) async {
     return ref.update(book.toJson());
   }
 
-  static Stream<List<BookSnapshot>> getAll(){
-    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("Books").snapshots();
-    return sqs.map(
-            (qs) => qs.docs.map(
-                (docSnap) => BookSnapshot.fromJson(docSnap)
-        ).toList());
+  static Stream<List<BookSnapshot>> getAll() {
+    Stream<QuerySnapshot> sqs =
+        FirebaseFirestore.instance.collection("Books").snapshots();
+    return sqs.map((qs) =>
+        qs.docs.map((docSnap) => BookSnapshot.fromJson(docSnap)).toList());
+  }
+
+  static Future<String> getBookTypeName(DocumentReference bookTypeRef) async {
+    DocumentSnapshot docSnap = await bookTypeRef.get();
+    BookType bookType =
+        BookType.fromJson(docSnap.data() as Map<String, dynamic>);
+    return bookType.name.toString();
   }
 }

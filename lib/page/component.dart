@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../model/book.dart';
 
 String description = "Chào mừng đến với cửa hàng BookShop của chúng tôi!\n\n"
     "Cửa hàng chúng tôi cung cấp nhiều sách hay và hot trên thị trường.\n\n"
@@ -29,23 +33,33 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatCurrency =
+        NumberFormat.currency(locale: 'vi_VN', symbol: 'VNĐ');
+
     return GestureDetector(
       onTap: press,
-      child: Card(
-        elevation: 1,
-        shadowColor: Colors.blue,
-        child: Column(
-          children: [
-            Image.network(
-              image,
-              height: ScreenSize.getScreenWidth(context) * 0.43,
-            ),
-            Text(name),
-            Text(
-              "\$ $price",
-              style: const TextStyle(color: Colors.red),
-            ),
-          ],
+      child: Container(
+        padding: EdgeInsets.all(2),
+        width: 180,
+        height: 280,
+        child: Card(
+          elevation: 1,
+          shadowColor: Colors.blue,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Image.network(
+                image,
+                height: ScreenSize.getScreenWidth(context) * 0.43,
+                width: ScreenSize.getScreenWidth(context) * 0.3,
+              ),
+              Text(name),
+              Text(
+                formatCurrency.format(double.parse(price)),
+                style: TextStyle(color: Colors.red),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -56,26 +70,25 @@ class ProductCard extends StatelessWidget {
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     Key? key,
-    required this.icon,
     required this.type,
     required this.press,
   }) : super(key: key);
-  final String icon, type;
+  final String type;
   final VoidCallback press;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: ScreenSize.getScreenWidth(context) * 0.286,
+      //width: ScreenSize.getScreenWidth(context) * 0.333,
       child: OutlinedButton(
         onPressed: press,
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: Column(
             children: [
-              Image.network(
-                icon,
-                height: 50,
-              ),
+              // Image.network(
+              //   icon,
+              //   height: 50,
+              // ),
               const SizedBox(height: 5),
               Text(
                 type,
@@ -381,4 +394,42 @@ Future<bool> showConfirmDialog(
       ) ??
       false;
   return result;
+}
+
+class BookTypeNameWidget extends StatelessWidget {
+  final DocumentReference bookTypeRef;
+  final String bookTypeName = "";
+  const BookTypeNameWidget({Key? key, required this.bookTypeRef})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<String>(
+      future: BookSnapshot.getBookTypeName(bookTypeRef),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          return Text('${snapshot.data}');
+        } else {
+          return Text('No data');
+        }
+      },
+    );
+  }
+
+  static Future<String> getTypeName(DocumentReference bookTypeRef) async {
+    try {
+      DocumentSnapshot docSnap = await bookTypeRef.get();
+      if (docSnap.exists) {
+        return docSnap.get('name').toString();
+      } else {
+        throw Exception('Document does not exist');
+      }
+    } catch (e) {
+      throw Exception('Error getting document: $e');
+    }
+  }
 }

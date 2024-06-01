@@ -2,12 +2,14 @@ import 'package:bookshop/auth/page_forgot_password.dart';
 import 'package:bookshop/auth/page_register.dart';
 import 'package:bookshop/model/customer.dart';
 import 'package:bookshop/widget_connect_firebase.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../page/component.dart';
 import '../page/page_main.dart';
+import '../page/page_search.dart';
 
 class BookShopApp extends StatelessWidget {
   const BookShopApp({Key? key}) : super(key: key);
@@ -278,6 +280,7 @@ class _PageLoginState extends State<PageLogin> {
         bool hasInfo = false;
         String temp = "Customer";
         String password = "";
+        CustomerSnapshot? csns;
         // Chạy vòng lặp kiểm tra
         for (CustomerSnapshot userSnapshot in resultList) {
           // Nếu email nhập vào có trong bảng users
@@ -285,6 +288,7 @@ class _PageLoginState extends State<PageLogin> {
             temp = userSnapshot.customer.name;
             hasInfo = true;
             password = userSnapshot.customer.password;
+            csns = userSnapshot;
             break;
           }
         }
@@ -295,6 +299,7 @@ class _PageLoginState extends State<PageLogin> {
             MaterialPageRoute(
                 builder: (context) => PageMain(
                       name: temp,
+                      CustomerRef: csns?.ref,
                     )),
             (route) => false,
           );
@@ -309,12 +314,13 @@ class _PageLoginState extends State<PageLogin> {
             phone: "",
             password: password,
           );
-          CustomerSnapshot.add(newUser);
+          csns = CustomerSnapshot.add(newUser) as CustomerSnapshot?;
           showSnackBar(context, "Logged in successfully!", 2);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => PageMain(
                       name: temp,
+                      CustomerRef: csns?.ref,
                     )),
             (route) => false,
           );
