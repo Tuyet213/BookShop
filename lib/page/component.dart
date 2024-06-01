@@ -254,11 +254,12 @@ class ProfileMenuTitle extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            text,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 15,
+          Expanded(
+            child: Text(text,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 15,
+              ),
             ),
           ),
         ],
@@ -346,7 +347,7 @@ Future<bool> showConfirmDialog(
       ),
     ),
     content: SizedBox(
-      height: 100,
+      height: 120,
       width: 333,
       child: Column(
         children: [
@@ -363,7 +364,7 @@ Future<bool> showConfirmDialog(
         children: [
           ButtonWidget(
             context: context,
-            width: 155,
+            width: 100,
             height: 40,
             icon: Icons.verified_user,
             label: "OK",
@@ -374,7 +375,7 @@ Future<bool> showConfirmDialog(
           ),
           ButtonWidget(
             context: context,
-            width: 155,
+            width: 130,
             height: 40,
             icon: Icons.cancel,
             label: "Cancel",

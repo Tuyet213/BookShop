@@ -274,7 +274,7 @@ class _PageLoginState extends State<PageLogin> {
       // Thực hiện lấy danh sách người dùng trên firebase về
       // Chuyển danh sách người dùng từ Stream<List> về <List> bằng hàm
       // convertStreamToList(Stream<List>) => List<>
-      convertStreamToList(CustomerSnapshot.getAll()).then((resultList) {
+      convertStreamToList(CustomerSnapshot.getAll()).then((resultList) async {
         // Chuyển thành công, resultList là List<UserSnapshot>
         // Biến kiểm tra thông tin tài khoản đăng nhập đã có trong bảng users chưa
         bool hasInfo = false;
@@ -313,13 +313,13 @@ class _PageLoginState extends State<PageLogin> {
             phone: "",
             //password: password,
           );
-          csns = CustomerSnapshot.add(newUser) as CustomerSnapshot?;
+          DocumentReference DocRef = await CustomerSnapshot.add(newUser);
           showSnackBar(context, "Logged in successfully!", 2);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => PageMain(
                       name: temp,
-                      CustomerRef: csns?.ref,
+                      CustomerRef: DocRef,
                     )),
             (route) => false,
           );
@@ -362,14 +362,15 @@ class _PageLoginState extends State<PageLogin> {
     );
     FirebaseAuth.instance.signInWithCredential(credential).then((value) {
       // Đăng nhập thành công
-      convertStreamToList(CustomerSnapshot.getAll()).then((resultList) {
+      convertStreamToList(CustomerSnapshot.getAll()).then((resultList) async {
         bool hasInfo = false;
         String temp = googleUser.displayName!;
-        String password = "";
-        for (CustomerSnapshot user in resultList) {
-          print(user.customer.email);
-          if (user.customer.email == googleUser.email) {
+        CustomerSnapshot? csns;
+        for (CustomerSnapshot userSnapshot in resultList) {
+          print(userSnapshot.customer.email);
+          if (userSnapshot.customer.email == googleUser.email) {
             hasInfo = true;
+             csns = userSnapshot;
             break;
           }
         }
@@ -380,6 +381,7 @@ class _PageLoginState extends State<PageLogin> {
             MaterialPageRoute(
                 builder: (context) => PageMain(
                       name: temp,
+                  CustomerRef: csns?.ref,
                     )),
             (route) => false,
           );
@@ -394,12 +396,13 @@ class _PageLoginState extends State<PageLogin> {
             phone: "",
             //password: password,
           );
-          CustomerSnapshot.add(newUser);
+          DocumentReference DocRef = await CustomerSnapshot.add(newUser);
           showSnackBar(context, "Logged in successfully!", 2);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => PageMain(
                       name: temp,
+                  CustomerRef: DocRef,
                     )),
             (route) => false,
           );

@@ -1,6 +1,8 @@
 import 'package:bookshop/model/book.dart';
+import 'package:bookshop/page/page_cart.dart';
 import 'package:bookshop/page/page_main.dart';
 import 'package:bookshop/page/page_search.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,14 +12,16 @@ import 'component.dart';
 
 class PageDetail extends StatelessWidget {
   final BookSnapshot bookSnapshot;
-
+  final DocumentReference? cusRef;
   const PageDetail({
     super.key,
     required this.bookSnapshot,
+    this.cusRef
   });
 
   @override
   Widget build(BuildContext context) {
+    print("pagedetail   ${cusRef}");
     final formatCurrency =
         NumberFormat.currency(locale: 'vi_VN', symbol: 'VNĐ');
     return Scaffold(
@@ -69,9 +73,7 @@ class PageDetail extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PageSearch(
-                                txt: "hehe",
-                              ),
+                              builder: (context) => PageCart(cusRef: cusRef,icon: BackNull())
                             ),
                           );
                         },
@@ -284,90 +286,120 @@ class PageDetail extends StatelessWidget {
                   const SizedBox(
                     height: 25,
                   ),
-                  // Uncomment and fix the following code if needed
-                  // StreamBuilder<List<ProductItemSnapshot>>(
-                  //   stream: ProductItemSnapshot.getAllProductItem(),
-                  //   builder: (context, cart) {
-                  //     if (cart.hasError) {
-                  //       return const Center(
-                  //         child: Text("Error"),
-                  //       );
-                  //     } else {
-                  //       if (!cart.hasData) {
-                  //         return const Center(
-                  //           child: CircularProgressIndicator(),
-                  //         );
-                  //       } else {
-                  //         bool isAdded = false;
-                  //         var list = cart.data!;
-                  //         for (var item in list) {
-                  //           if (item.productItem.id == bookSnapshot.book.id) {
-                  //             isAdded = true;
-                  //             break;
-                  //           }
-                  //         }
-                  //         if (isAdded) {
-                  //           return Center(
-                  //             child: SizedBox(
-                  //               width: 200,
-                  //               height: 48,
-                  //               child: ElevatedButton(
-                  //                 onPressed: () {
-                  //                   showSnackBar(
-                  //                     context,
-                  //                     "This product has already been added!",
-                  //                     2,
-                  //                   );
-                  //                 },
-                  //                 style: ElevatedButton.styleFrom(
-                  //                   backgroundColor: Colors.grey,
-                  //                   shape: const StadiumBorder(),
-                  //                 ),
-                  //                 child: const Text("ADDED"),
-                  //               ),
-                  //             ),
-                  //           );
-                  //         } else {
-                  //           return Center(
-                  //             child: SizedBox(
-                  //               width: 200,
-                  //               height: 48,
-                  //               child: ElevatedButton(
-                  //                 onPressed: () {
-                  //                   ProductItem product = ProductItem(
-                  //                     id: bookSnapshot.book.id,
-                  //                     name: bookSnapshot.book.name,
-                  //                     size: bookSnapshot.book.size,
-                  //                     image: bookSnapshot.book.image,
-                  //                     price: formatCurrency.format(bookSnapshot.book.price),
-                  //                     amount: 1,
-                  //                   );
-                  //                   ProductItemSnapshot.add(product);
-                  //                   showSnackBar(
-                  //                     context,
-                  //                     "Added the product successfully!",
-                  //                     2,
-                  //                   );
-                  //                 },
-                  //                 style: ElevatedButton.styleFrom(
-                  //                   backgroundColor: Colors.orange,
-                  //                   shape: const StadiumBorder(),
-                  //                 ),
-                  //                 child: const Text("ADD TO CART"),
-                  //               ),
-                  //             ),
-                  //           );
-                  //         }
-                  //       }
-                  //     }
-                  //   },
-                  // ),
+
+                  StreamBuilder<List<CartItemSnapshot>>(
+                    stream: CartItemSnapshot.getAll(),
+                    builder: (context, AsyncSnapshot<List<CartItemSnapshot>> snapshot) {
+                      print("PageDetailttt${snapshot.error}");
+                      if (snapshot.hasError) {
+                        return  Center(child: Text("Error"),);
+                      }
+                      else {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                          bool isAdded = false;
+                          var list = snapshot.data!;
+                          if(list.isEmpty) return Center(
+                          child: SizedBox(
+                            width: 200,
+                            height: 48,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                CartItem book = CartItem(
+                                    id: "",
+                                    bookRef: bookSnapshot.ref,
+                                    customerRef: cusRef!,
+                                    quantity: 1
+                                );
+                                await CartItemSnapshot.add(book);
+                                showSnackBar(
+                                  context,
+                                  "Thêm thành công!",
+                                  2,
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                shape: const StadiumBorder(),
+                              ),
+                              child: const Text("Thêm vào giỏ hàng"),
+                            ),
+                          ),
+                        );
+                          else{
+                            for (var item in list) {
+                              if (item.cartItem.bookRef == bookSnapshot.ref) {
+                                isAdded = true;
+                                break;
+                              }
+                              if (isAdded) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 200,
+                                    height: 48,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        showSnackBar(
+                                          context,
+                                          "This product has already been added!",
+                                          2,
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.grey,
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      child: const Text("ADDED"),
+                                    ),
+                                  ),
+                                );
+                              }
+                              else {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 200,
+                                    height: 48,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        CartItem book = CartItem(
+                                            id: "",
+                                            bookRef: bookSnapshot.ref,
+                                            customerRef: cusRef!,
+                                            quantity: 1
+                                        );
+                                        await CartItemSnapshot.add(book);
+                                        showSnackBar(
+                                          context,
+                                          "Thêm thành công!",
+                                          2,
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.orange,
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      child: const Text("Thêm vào giỏ hàng"),
+                                    ),
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                      }
+                      return Text("");
+                    },
+                  ),
+
                 ],
               ),
             ),
           ),
         ],
       ),
+
     );
   }
 }

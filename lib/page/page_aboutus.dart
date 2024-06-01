@@ -83,8 +83,8 @@ class PageAboutUs extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(15, 5.5, 15, 15),
               child: Text(
                 "Nguyễn Văn Minh Quân - 63135194\n"
-                "Huỳnh Thị Ngọc Tuyết - xxxx\n"
-                "Tạ Huỳnh Đạt - xxxxx",
+                "Huỳnh Thị Ngọc Tuyết - 63136018\n"
+                "Tạ Huỳnh Đạt - 63133671",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.green),
               ),

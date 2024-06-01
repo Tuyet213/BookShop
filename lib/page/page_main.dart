@@ -1,5 +1,6 @@
 import 'package:bookshop/model/customer.dart';
 import 'package:bookshop/page/page_aboutus.dart';
+import 'package:bookshop/page/page_cart.dart';
 import 'package:bookshop/page/page_home.dart';
 import 'package:bookshop/page/page_list.dart';
 import 'package:bookshop/page/page_userinfo.dart';
@@ -37,12 +38,15 @@ class _PageMainState extends State<PageMain> {
     cusRef = widget.CustomerRef;
 
     screen = [
-      PageHome(),
-      const PageList(
+      PageHome(cusRef: cusRef),
+      PageList(
+        cusRef: cusRef,
         icon: BackNull(),
       ),
-      const PageList(
+      PageCart(
+        cusRef: cusRef,
         icon: BackNull(),
+
       ),
       PageUserInfo(
         cusRef: cusRef,

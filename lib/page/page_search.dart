@@ -14,9 +14,11 @@ class PageSearch extends StatelessWidget {
     required this.txt,
     this.checkType,
     this.bookTypeRef,
+    this.cusRef
   });
   final String txt;
   final DocumentReference? bookTypeRef;
+  final DocumentReference? cusRef;
   final bool? checkType;
   @override
   Widget build(BuildContext context) {
@@ -103,7 +105,7 @@ class PageSearch extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      PageDetail(bookSnapshot: gem),
+                                      PageDetail(cusRef: cusRef,bookSnapshot: gem),
                                 ),
                               );
                             },

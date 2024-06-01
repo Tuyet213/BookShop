@@ -5,6 +5,7 @@ import 'package:bookshop/model/booktype.dart';
 import 'package:bookshop/page/page_detail.dart';
 import 'package:bookshop/page/page_list.dart';
 import 'package:bookshop/page/page_search.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../model/book.dart';
@@ -12,10 +13,11 @@ import '../model/book.dart';
 import 'component.dart';
 
 class PageHome extends StatelessWidget {
-  PageHome({Key? key}) : super(key: key);
+
+  PageHome({Key? key, this.cusRef}) : super(key: key);
   final TextEditingController txtSearch = TextEditingController();
   final GlobalKey<FormState> formState = GlobalKey<FormState>();
-
+  final DocumentReference? cusRef;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,7 +180,8 @@ class PageHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const PageList(
+                                  builder: (context) =>  PageList(
+                                    cusRef: cusRef,
                                     icon: BackIcon(),
                                   ),
                                 ),
@@ -203,8 +206,12 @@ class PageHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PageDetail(
-                                      bookSnapshot: books[listRandom[0]]),
+                                  builder: (context) {
+                                    print(cusRef);
+                                    return PageDetail(
+                                        cusRef: cusRef,
+                                        bookSnapshot: books[listRandom[0]]);
+                                  },
                                 ),
                               );
                             },
@@ -218,6 +225,7 @@ class PageHome extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PageDetail(
+                                    cusRef: cusRef,
                                       bookSnapshot: books[listRandom[1]]),
                                 ),
                               );
@@ -240,6 +248,7 @@ class PageHome extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PageDetail(
+                                    cusRef: cusRef,
                                       bookSnapshot: books[listRandom[2]]),
                                 ),
                               );
@@ -254,6 +263,7 @@ class PageHome extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PageDetail(
+                                    cusRef: cusRef,
                                       bookSnapshot: books[listRandom[3]]),
                                 ),
                               );
@@ -276,6 +286,7 @@ class PageHome extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PageDetail(
+                                    cusRef: cusRef,
                                       bookSnapshot: books[listRandom[4]]),
                                 ),
                               );
@@ -290,6 +301,7 @@ class PageHome extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PageDetail(
+                                    cusRef: cusRef,
                                       bookSnapshot: books[listRandom[5]]),
                                 ),
                               );

@@ -1,5 +1,6 @@
 import 'package:bookshop/model/book.dart';
 import 'package:bookshop/page/page_detail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,7 +10,9 @@ class PageList extends StatelessWidget {
   const PageList({
     super.key,
     required this.icon,
+    this.cusRef
   });
+  final DocumentReference? cusRef;
   final Widget icon;
   @override
   Widget build(BuildContext context) {
@@ -71,8 +74,11 @@ class PageList extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      PageDetail(bookSnapshot: gem),
+                                  builder: (context) {
+                                    print("pagelist ${cusRef}");
+                                    return PageDetail(cusRef: cusRef,bookSnapshot: gem);
+                                  }
+                                      ,
                                 ),
                               );
                             },

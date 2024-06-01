@@ -88,7 +88,7 @@ class PageUserInfo extends StatelessWidget {
           print(snapshot.error);
           if (snapshot.hasError) {
             return const Center(
-              child: Text("Error loading customer data {snapshot.error}}"),
+              child: Text("Error loading customer data {snapshot.error}"),
             );
           } else if (!snapshot.hasData) {
             return const Center(
