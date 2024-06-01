@@ -21,7 +21,6 @@ class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPhone = TextEditingController();
-  TextEditingController txtPassword = TextEditingController();
   TextEditingController txtAddress = TextEditingController();
 
   @override
@@ -62,12 +61,7 @@ class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
                 ),
                 keyboardType: TextInputType.phone,
               ),
-              TextField(
-                controller: txtPassword,
-                decoration: InputDecoration(
-                    labelText: "Mật khẩu"
-                ),
-              ),
+
               TextField(
                 controller: txtAddress,
                 decoration: InputDecoration(
@@ -80,8 +74,8 @@ class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
                 children: [
                   ElevatedButton(
                       onPressed: (){
-                        if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty && !txtPassword.text.trim().isEmpty && !txtAddress.text.trim().isEmpty){
-                          Customer customer = Customer(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(), password: txtPassword.text.trim(), address: txtAddress.text.trim());
+                        if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty  && !txtAddress.text.trim().isEmpty){
+                          Customer customer = Customer(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(), address: txtAddress.text.trim());
 
                           showMySnackBar(context, "Đang cập nhật khách hàng", 3);
                           _updateCustomer(customer);
@@ -113,8 +107,6 @@ class _UpdateCustomerPageState extends State<UpdateCustomerPage> {
         setState(() {
           txtId.text = customer.id;
           txtName.text = customer.name;
-          txtPassword.text = customer.password;
-          txtPhone.text = customer.phone;
           txtEmail.text = customer.email;
           txtAddress.text = customer.address;
         });

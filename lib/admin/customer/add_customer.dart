@@ -15,7 +15,6 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPhone = TextEditingController();
-  TextEditingController txtPassword = TextEditingController();
   TextEditingController txtAddress = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -56,12 +55,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                     ),
                     keyboardType: TextInputType.phone,
                   ),
-                  TextField(
-                    controller: txtPassword,
-                    decoration: InputDecoration(
-                        labelText: "Mật khẩu"
-                    ),
-                  ),
+
                   TextField(
                     controller: txtAddress,
                     decoration: InputDecoration(
@@ -74,8 +68,8 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                     children: [
                       ElevatedButton(
                           onPressed: (){
-                            if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty && !txtPassword.text.trim().isEmpty && !txtAddress.text.trim().isEmpty){
-                              Customer customer = Customer(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(), password: txtPassword.text.trim(), address: txtAddress.text.trim());
+                            if(!txtId.text.trim().isEmpty && !txtName.text.trim().isEmpty && !txtEmail.text.trim().isEmpty && !txtPhone.text.trim().isEmpty  && !txtAddress.text.trim().isEmpty){
+                              Customer customer = Customer(id: txtId.text.trim(), name: txtName.text.trim(), email: txtEmail.text.trim(), phone: txtPhone.text.trim(),  address: txtAddress.text.trim());
                               showMySnackBar(context, "Đang thêm khách hàng", 10);
                               _addCustomer(customer);
                             }

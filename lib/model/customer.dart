@@ -2,7 +2,8 @@ import 'package:bookshop/model/cart_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Customer{
-  String id, name, email, phone, address, password;
+  String id, name, email, phone, address;
+  // password;
 
 
 
@@ -13,7 +14,7 @@ class Customer{
       'email': this.email,
       'phone': this.phone,
       'address': this.address,
-      'password': this.password,
+      // 'password': this.password,
     };
   }
 
@@ -24,7 +25,7 @@ class Customer{
       email: map['email'] as String,
       phone: map['phone'] as String,
       address: map['address'] as String,
-      password: map['password'] as String,
+      // password: map['password'] as String,
     );
   }
 
@@ -34,7 +35,7 @@ class Customer{
     required this.email,
     required this.phone,
     required this.address,
-    required this.password,
+    // required this.password,
   });
 }
 class CustomerSnapshot{

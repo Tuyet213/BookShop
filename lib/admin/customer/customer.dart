@@ -102,7 +102,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                     Text("Tên: ${customerSnapshot.customer.name}"),
                                     Text("Email: ${customerSnapshot.customer.email}"),
                                     Text("SĐT: ${customerSnapshot.customer.phone}"),
-                                    Text("Mật khẩu: ${customerSnapshot.customer.password}"),
+                                    // Text("Mật khẩu: ${customerSnapshot.customer.password}"),
                                     Text("Địa chỉ: ${customerSnapshot.customer.address}"),
                                   ],
                                 ),

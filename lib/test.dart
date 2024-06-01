@@ -5,6 +5,9 @@ import 'package:bookshop/admin/income_statistics.dart';
 import 'package:bookshop/admin/order/order.dart';
 import 'package:bookshop/admin/staff.dart';
 import 'package:bookshop/admin/book_type/update_booktype.dart';
+import 'package:bookshop/auth/page_forgot_password.dart';
+import 'package:bookshop/auth/page_login.dart';
+import 'package:bookshop/auth/page_register.dart';
 import 'package:bookshop/widget_connect_firebase.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +40,16 @@ class PageHome extends StatelessWidget {//class
                   destination: OrderPageConection()),
               _buildButton(context,
                   label: "Thống kê doanh thu",
-                  destination: StatisticsPageConection())
+                  destination: StatisticsPageConection()),
+              _buildButton(context,
+                  label: "Login",
+                  destination: PageLoginConnection()),
+              _buildButton(context,
+                  label: "SignUp",
+                  destination: PageRegister()),
+              _buildButton(context,
+                  label: "Forgot Password",
+                  destination: PageForgotPassword())
 
             ],
           ),

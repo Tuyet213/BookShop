@@ -12,7 +12,20 @@
           "package_name": "vn.edu.ntu.bookshop.bookshop"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "861440430023-s7cbht1p8d4dktme5c79m0vu9jn7n8h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.edu.ntu.bookshop.bookshop",
+            "certificate_hash": "789282248e36c1f725b5770201be30ebe4643fe0"
+          }
+        },
+        {
+          "client_id": "861440430023-bjplqknissmp2p3np353lcmthjp11ans.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAXDbXKBW8vUvfu7aOdMkCRpPaty6oGF5E"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861440430023-bjplqknissmp2p3np353lcmthjp11ans.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
