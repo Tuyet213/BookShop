@@ -1,10 +1,8 @@
 import 'package:bookshop/model/cart_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Customer{
+class Customer {
   String id, name, email, phone, address, password;
-
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -37,7 +35,8 @@ class Customer{
     required this.password,
   });
 }
-class CustomerSnapshot{
+
+class CustomerSnapshot {
   Customer customer;
   DocumentReference ref;
 
@@ -60,19 +59,28 @@ class CustomerSnapshot{
     );
   }
   static Future<DocumentReference> add(Customer customer) async {
-    return FirebaseFirestore.instance.collection("Customers").add(customer.toJson());
+    return FirebaseFirestore.instance
+        .collection("Customers")
+        .add(customer.toJson());
   }
 
-  Future<void> update(Customer customer) async{
+  Future<void> update(Customer customer) async {
     return ref.update(customer.toJson());
   }
 
-  static Stream<List<CustomerSnapshot>> getAll(){
-    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("Customers").snapshots();
-    return sqs.map(
-            (qs) => qs.docs.map(
-                (docSnap) => CustomerSnapshot.fromJson(docSnap)
-        ).toList());
+  static Stream<List<CustomerSnapshot>> getAll() {
+    Stream<QuerySnapshot> sqs =
+        FirebaseFirestore.instance.collection("Customers").snapshots();
+    return sqs.map((qs) =>
+        qs.docs.map((docSnap) => CustomerSnapshot.fromJson(docSnap)).toList());
   }
 
+  static Future<CustomerSnapshot> getCustomerByRef(
+      DocumentReference ref) async {
+    DocumentSnapshot docSnap = await ref.get();
+    if (!docSnap.exists) {
+      throw Exception('Document does not exist');
+    }
+    return CustomerSnapshot.fromJson(docSnap);
+  }
 }

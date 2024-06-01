@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'bookshop-a426b',
     storageBucket: 'bookshop-a426b.appspot.com',
   );
+
 }
