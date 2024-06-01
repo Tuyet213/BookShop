@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CartItem{
+class CartItem {
   String id;
   DocumentReference customerRef;
   DocumentReference bookRef;
@@ -31,7 +31,8 @@ class CartItem{
     );
   }
 }
-class CartItemSnapshot{
+
+class CartItemSnapshot {
   CartItem cartItem;
   DocumentReference ref;
 
@@ -54,22 +55,30 @@ class CartItemSnapshot{
     );
   }
   static Future<DocumentReference> add(CartItem cartItem) async {
-    return FirebaseFirestore.instance.collection("CartItems").add(cartItem.toJson());
+    return FirebaseFirestore.instance
+        .collection("CartItems")
+        .add(cartItem.toJson());
   }
 
-  Future<void> update(CartItem cartItem) async{
+  Future<void> update(CartItem cartItem) async {
     return ref.update(cartItem.toJson());
   }
 
-  Future<void> delete() async{
+  Future<void> delete() async {
     return ref.delete();
   }
 
-  static Stream<List<CartItemSnapshot>> getAll(){
-    Stream<QuerySnapshot> sqs = FirebaseFirestore.instance.collection("CartItems").snapshots();
-    return sqs.map(
-            (qs) => qs.docs.map(
-                (docSnap) => CartItemSnapshot.fromJson(docSnap)
-        ).toList());
+  static Stream<List<CartItemSnapshot>> getAll() {
+    Stream<QuerySnapshot> sqs =
+        FirebaseFirestore.instance.collection("CartItems").snapshots();
+    return sqs.map((qs) =>
+        qs.docs.map((docSnap) => CartItemSnapshot.fromJson(docSnap)).toList());
+  }
+
+  static Stream<List<CartItemSnapshot>> getOnly(String cusID) {
+    Stream<QuerySnapshot> sqs =
+        FirebaseFirestore.instance.collection("CartItems").snapshots();
+    return sqs.map((qs) =>
+        qs.docs.map((docSnap) => CartItemSnapshot.fromJson(docSnap)).toList());
   }
 }

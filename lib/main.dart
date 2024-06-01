@@ -1,5 +1,8 @@
 import 'package:bookshop/test.dart';
 import 'package:flutter/material.dart';
+
+import 'auth/page_login.dart';
+
 //hello
 void main() {
   runApp(const MyApp());
@@ -32,7 +35,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: PageHome(),
+      home: BookShopApp(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
