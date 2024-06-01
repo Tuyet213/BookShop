@@ -10,7 +10,7 @@ class PageUserInfo extends StatelessWidget {
   final DocumentReference? cusRef;
 
   @override
-  Future<Widget> build(BuildContext context) async {
+  Widget build(BuildContext context) {
     if (cusRef == null) {
       return Scaffold(
         appBar: AppBar(
@@ -83,7 +83,7 @@ class PageUserInfo extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<CustomerSnapshot>(
-        future: await CustomerSnapshot.getCustomerByRef(cusRef!),
+        future: CustomerSnapshot.getCustomerByRef(cusRef!),
         builder: (BuildContext context, snapshot) {
           print(snapshot.error);
           if (snapshot.hasError) {

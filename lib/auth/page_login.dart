@@ -287,7 +287,6 @@ class _PageLoginState extends State<PageLogin> {
           if (userSnapshot.customer.email == txtEmail.text) {
             temp = userSnapshot.customer.name;
             hasInfo = true;
-            password = userSnapshot.customer.password;
             csns = userSnapshot;
             break;
           }
@@ -312,7 +311,7 @@ class _PageLoginState extends State<PageLogin> {
             address: "",
             email: txtEmail.text,
             phone: "",
-            password: password,
+            //password: password,
           );
           csns = CustomerSnapshot.add(newUser) as CustomerSnapshot?;
           showSnackBar(context, "Logged in successfully!", 2);
@@ -371,7 +370,6 @@ class _PageLoginState extends State<PageLogin> {
           print(user.customer.email);
           if (user.customer.email == googleUser.email) {
             hasInfo = true;
-            password = user.customer.password;
             break;
           }
         }
@@ -394,7 +392,7 @@ class _PageLoginState extends State<PageLogin> {
             address: "",
             email: googleUser.email,
             phone: "",
-            password: password,
+            //password: password,
           );
           CustomerSnapshot.add(newUser);
           showSnackBar(context, "Logged in successfully!", 2);
@@ -452,7 +450,6 @@ class _PageLoginState extends State<PageLogin> {
                   for (CustomerSnapshot user in resultList) {
                     if (user.customer.phone == txtPhone.text) {
                       hasInfo = true;
-                      password = user.customer.password;
                       break;
                     }
                   }
@@ -477,7 +474,7 @@ class _PageLoginState extends State<PageLogin> {
                       address: "",
                       email: txtPhone.text,
                       phone: txtPhone.text,
-                      password: password,
+                      //password: password,
                     );
                     CustomerSnapshot.add(newUser);
                     showSnackBar(context, "Logged in successfully!", 2);

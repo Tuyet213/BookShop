@@ -17,30 +17,34 @@ class PageAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            children: [
-              _buildButton(context,
-                  label: "BookType", destination: BookTypePageConection()),
-              _buildButton(context,
-                  label: "Book", destination: BookPageConection()),
-              _buildButton(context,
-                  label: "Staff", destination: StaffPageConection()),
-              _buildButton(context,
-                  label: "Customer", destination: CustomerPageConection()),
-              _buildButton(context,
-                  label: "Order", destination: OrderPageConection()),
-              _buildButton(context,
-                  label: "Thống kê doanh thu",
-                  destination: StatisticsPageConection())
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Admin"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: Column(
+              children: [
+                _buildButton(context,
+                    label: "Thể loại sách - BookType", destination: BookTypePageConection()),
+                _buildButton(context,
+                    label: "Sách - Book", destination: BookPageConection()),
+                _buildButton(context,
+                    label: "Khách hàng - Customer", destination: CustomerPageConection()),
+                _buildButton(context,
+                    label: "Đơn hàng - Order", destination: OrderPageConection()),
+                _buildButton(context,
+                    label: "Thống kê doanh thu",
+                    destination: StatisticsPageConection())
+              ],
+            ),
           ),
         ),
-      ),
 
+      ),
     );
   }
 

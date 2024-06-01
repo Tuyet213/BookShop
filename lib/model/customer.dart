@@ -2,7 +2,7 @@ import 'package:bookshop/model/cart_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Customer {
-  String id, name, email, phone, address, password;
+  String id, name, email, phone, address;
 
   Map<String, dynamic> toJson() {
     return {

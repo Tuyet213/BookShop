@@ -154,7 +154,7 @@ class _PageEditInfoState extends State<PageEditInfo> {
                               address: txtAddress.text,
                               email: widget.userSnapshot.customer.email,
                               phone: txtPhone.text,
-                              password: '',
+                              //password: '',
                             );
                             await widget.userSnapshot.update(newUser);
                             showSnackBar(

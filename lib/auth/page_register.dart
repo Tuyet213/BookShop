@@ -303,7 +303,6 @@ class _PageRegisterState extends State<PageRegister> {
                   for (CustomerSnapshot user in resultList) {
                     if (user.customer.phone == txtPhone.text) {
                       hasInfo = true;
-                      password = user.customer.password;
                       break;
                     }
                   }
@@ -328,7 +327,7 @@ class _PageRegisterState extends State<PageRegister> {
                       address: "",
                       email: txtPhone.text,
                       phone: txtPhone.text,
-                      password: password,
+                      //password: password,
                     );
                     CustomerSnapshot.add(newUser);
                     showSnackBar(context, "Logging in...", 2);
@@ -402,7 +401,8 @@ class _PageRegisterState extends State<PageRegister> {
               address: "",
               email: googleUser.email,
               phone: "",
-              password: "");
+              //password: ""
+          );
           CustomerSnapshot.add(newUser);
           showSnackBar(context, "Logging in...", 2);
           Navigator.of(context).pushAndRemoveUntil(
