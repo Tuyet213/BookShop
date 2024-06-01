@@ -53,6 +53,9 @@ dependencies:
   url_launcher: ^6.2.6
   intl: ^0.18.1
   fl_chart: ^0.68.0
+  flutter_svg: ^1.1.6
+  sms_autofill: ^2.3.0
+  google_nav_bar: ^5.0.6
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +73,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/images/
+    - assets/icons/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -92,13 +98,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
+  fonts:
+    - family: Gordita
+      fonts:
+        - asset: assets/fonts/Gordita_Regular.otf
+        - asset: assets/fonts/Gordita_Medium.otf
+          weight: 500
+        - asset: assets/fonts/Gordita_Bold.otf
+          weight: 700
+        - asset: assets/fonts/Gordita_Light.otf
+          weight: 300
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
