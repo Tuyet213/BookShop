@@ -4,6 +4,7 @@ import 'package:bookshop/model/order_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import '../model/book.dart';
@@ -56,6 +57,7 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                 if(snapshot.hasError) return Center(child: Text("Lỗi"),);
                 if(!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
                 filterList = snapshot.data!;
+                print("a:${filterList.length}");
                 return Column(
                   crossAxisAlignment:  CrossAxisAlignment.start,
                   children: [
@@ -70,10 +72,10 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                                   lastDate: DateTime(2040)
                               );
                               if(d!=null){
-                                // setState(() {
-                                //   from=d;
-                                // });
-                                from=d;
+                                setState(() {
+                                  from=d;
+                                });
+                                //from=d;
                               }
 
                             },
@@ -93,10 +95,10 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                                   lastDate: DateTime(2040)
                               );
                               if(d!=null){
-                                // setState(() {
-                                //   to=d;
-                                // });
-                                to=d;
+                                setState(() {
+                                  to=d;
+                                });
+                                //to=d;
                               }
 
                             },
@@ -108,8 +110,9 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                     ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            filterList = fullList.where((order) => order.order.orderedDate.isAfter(from!)
+                            filterList = filterList.where((order) => order.order.orderedDate.isAfter(from!)
                                 && order.order.orderedDate.isBefore(to!) && order.order.status == 1,).toList();
+                            print("Filtered Orders: ${filterList.length}");
                             for(var order in filterList){
                               Stream<List<OrderDetailSnapshot>> orderDetailSnapshots = OrderDetailSnapshot.getByOrderRef(order.ref);
                               List<OrderDetailSnapshot> orderDetailsList = [];
@@ -147,7 +150,7 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                         Text("${to?.day??1}/${to?.month??1}/${to?.year??2003})")
                       ],
                     ):Text(""),
-                    filterList.isNotEmpty?FutureBuilder<List<PieChartSectionData>>(
+                    filterList.isNotEmpty?FutureBuilder<Map<String, int>>(
                       future: getPieSections(),//Future
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -155,32 +158,51 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                         } else if (snapshot.hasError) {
                           return Text("Lỗi khi tải dữ liệu.");
                         }
-                        return Expanded(child: PieChart(PieChartData(
-                          startDegreeOffset: 90,
-                            sections: snapshot.data),
-                        ));
+                        List<PieChartSectionData> sections = [];
+                        int sum  = snapshot.data!.values.fold(0, (prev, element) => prev + element);;
+                        int colorIndex = 0;
+                        var sorted =  Map.fromEntries(
+                            snapshot.data!.entries.toList()
+                              ..sort((a, b) => b.value.compareTo(a.value)));
+                        List<Widget> data = sorted.entries.map((entry) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("${entry.key}"),
+                              Text("${entry.value}"),
+                            ],
+                          );
+                        }).toList();
+
+                        sorted.forEach((key, value) {
+                          sections.add(PieChartSectionData(
+                            title: '${value}\n${double.parse(((value/sum)*100).toDouble().toStringAsFixed(2))}%',
+                            titleStyle: TextStyle(fontSize: 10),
+                            color: Color.fromARGB(100, Random().nextInt(255), Random().nextInt(255), Random().nextInt(255)),
+                            value: value.toDouble(),
+                            radius: 130,
+                            showTitle: true,));
+                          colorIndex++;
+                        });
+                        return Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                              height: 300, // Giá trị cụ thể cho chiều cao
+                              child: PieChart(
+                                PieChartData(
+                                    startDegreeOffset: 90,
+                                    sections: sections
+                                ),
+                              ),
+                            ),
+                            ...data,
+                          ],
+                        );
+
                       },
                     ):Text(""),
-                    // Expanded(child: ListView.separated(
-                    //     itemBuilder: (context, index) {
-                    //       return Row(
-                    //         children: [
-                    //           Container(
-                    //             width: 10,
-                    //             height: 10,
-                    //             decoration: BoxDecoration(
-                    //               shape: BoxShape.circle,
-                    //               color: productColors.entries.elementAt(index).value
-                    //             ),
-                    //           ),
-                    //           SizedBox(width: 8,),
-                    //           Text(productColors.entries.elementAt(index).key)
-                    //         ],
-                    //       );
-                    //     },
-                    //     separatorBuilder: (context, index) => Divider(thickness: 1.5,),
-                    //     itemCount: productColors.length))
-                  ],
+                ],
                 );
               }
           ),
@@ -195,32 +217,20 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
     from = today;
     to = today;
   }
-  Future<List<PieChartSectionData>> getPieSections() async {
-    List<PieChartSectionData> sections = [];
-    int colorIndex = 0;
-    var productRevenueList = productRevenues.entries.toList();
-    productRevenueList.sort((a, b)=> a.value.compareTo(b.value));
-    productRevenues = Map.fromEntries(productRevenueList);
-    for (var entry in productRevenues.entries) {
-      DocumentSnapshot bookSnapshot = await entry.key.get();
-      Book book = Book.fromJson(bookSnapshot.data() as Map<String, dynamic>);
-      String title = book.name;
-      double value = entry.value.toDouble();
-      Color color = Color.fromRGBO(Random().nextInt(255),Random().nextInt(255),Random().nextInt(255), 0.5);
+  Future<Map<String, int>> getPieSections() async {
+    Map<String, int> sections={};
+    // List<PieChartSectionData> sections = [];
 
-      sections.add(PieChartSectionData(
-        title: '${title}\n${value}',
-        titleStyle: TextStyle(fontSize: 10),
-        color: color,
-        value: value,
-        radius: 170,
-        showTitle: true,
-
-      ));
-      colorIndex++;
-    }
-
-
+     var productRevenueList = productRevenues.entries.toList();
+     productRevenueList.sort((a, b)=> a.value.compareTo(b.value));
+     productRevenues = Map.fromEntries(productRevenueList);
+     for (var entry in productRevenues.entries) {
+       DocumentSnapshot bookSnapshot = await entry.key.get();
+       Book book = Book.fromJson(bookSnapshot.data() as Map<String, dynamic>);
+       String title = book.name;
+       int value = entry.value.toInt();
+       sections[title] = value;
+     }
     return sections;
   }
 
