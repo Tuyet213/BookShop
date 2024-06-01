@@ -72,10 +72,10 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                                   lastDate: DateTime(2040)
                               );
                               if(d!=null){
-                                setState(() {
-                                  from=d;
-                                });
-                                //from=d;
+                                // setState(() {
+                                //   from=d;
+                                // });
+                                from=d;
                               }
 
                             },
@@ -95,10 +95,10 @@ class _BudgetStatisticsState extends State<BudgetStatistics> {
                                   lastDate: DateTime(2040)
                               );
                               if(d!=null){
-                                setState(() {
-                                  to=d;
-                                });
-                                //to=d;
+                                // setState(() {
+                                //   to=d;
+                                // });
+                                to=d;
                               }
 
                             },
