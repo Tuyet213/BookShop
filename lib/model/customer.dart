@@ -75,8 +75,7 @@ class CustomerSnapshot {
         qs.docs.map((docSnap) => CustomerSnapshot.fromJson(docSnap)).toList());
   }
 
-  static Future<CustomerSnapshot> getCustomerByRef(
-      DocumentReference ref) async {
+  static Future<CustomerSnapshot> getCustomerByRef(DocumentReference ref) async {
     DocumentSnapshot docSnap = await ref.get();
     if (!docSnap.exists) {
       throw Exception('Document does not exist');

@@ -1,10 +1,13 @@
 import 'package:bookshop/test.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'auth/page_login.dart';
 
 //hello
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Đảm bảo rằng bạn có thể thực hiện các tác vụ bất đồng bộ trong main()
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
