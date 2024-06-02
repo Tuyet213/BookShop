@@ -146,13 +146,13 @@ class PageDetail extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 5,
                       ),
                       Row(
                         children: [
                           const Icon(Icons.sell),
                           const SizedBox(
-                            width: 10,
+                            width: 5,
                           ),
                           Text(
                                 formatCurrency.format(bookSnapshot.book.price),

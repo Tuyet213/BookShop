@@ -124,7 +124,7 @@ class PageSearch extends StatelessWidget {
                                       gem.book.image,
                                       height:
                                           ScreenSize.getScreenWidth(context) *
-                                              0.38,
+                                              0.3,
                                       width:
                                           ScreenSize.getScreenWidth(context) *
                                               0.3,
